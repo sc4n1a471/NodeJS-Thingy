@@ -73,7 +73,7 @@ app.get("/", async (req, res) => {
     res.json("Successfully started a server");
 });
 
-app.get("/:id", async (req, res) => {
+app.get("/api/:id", async (req, res) => {
     const queryCommand = "SELECT * FROM table1 WHERE id = '" + req.params.id + "';"
     console.log(queryCommand)
     con.query(queryCommand, (error, results) => {
@@ -88,14 +88,30 @@ app.get("/:id", async (req, res) => {
     })
 })
 
-app.post("/", async(req, res) => {
-    const data = {
+app.post("/api_post", async(req, res) => {
+    let data = {
         id: req.body.id,
         name: req.body.name,
         email: req.body.email,
         age: req.body.age
     }
-    const command = "INSERT INTO table1 VALUES (?, ?, ?, ?)"
+    console.log(data)
+    let exist = 0
+
+    const check = "SELECT * FROM table1 WHERE id = '" + data.id + "';"
+    console.log(check)
+    con.query(check, (error, results) => {
+        console.log("Match found")
+        console.log(results[0])
+        exist = 1
+    })
+    let command = "";
+    if (exist) {
+        command = "UPDATE table1 SET name = '" + data.name + "', email"
+    } else {
+        command = "INSERT INTO table1 VALUES (?, ?, ?, ?)"
+    }
+
     con.query(command, Object.values(data), (error) => {
         if (error) {
             res.json({
