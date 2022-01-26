@@ -4,32 +4,24 @@
     <option name="openedFilesInfos">
       <list>
         <OpenedFileInfo>
+          <option name="caretOffset" value="480" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/server1" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
           <option name="caretOffset" value="13" />
           <option name="fileUrl" value="file://$PROJECT_DIR$/token.txt" />
         </OpenedFileInfo>
         <OpenedFileInfo>
-          <option name="caretOffset" value="0" />
-          <option name="fileUrl" value="file://$PROJECT_DIR$/mc.js" />
-        </OpenedFileInfo>
-        <OpenedFileInfo>
-          <option name="caretOffset" value="291" />
+          <option name="caretOffset" value="488" />
           <option name="fileUrl" value="file://$PROJECT_DIR$/server1.js" />
         </OpenedFileInfo>
         <OpenedFileInfo>
-          <option name="caretOffset" value="0" />
-          <option name="fileUrl" value="file://$PROJECT_DIR$/mc.js" />
-        </OpenedFileInfo>
-        <OpenedFileInfo>
-          <option name="caretOffset" value="1159" />
+          <option name="caretOffset" value="4129" />
           <option name="fileUrl" value="file://$PROJECT_DIR$/db.js" />
         </OpenedFileInfo>
         <OpenedFileInfo>
-          <option name="caretOffset" value="0" />
-          <option name="fileUrl" value="file://$PROJECT_DIR$/.gitignore" />
-        </OpenedFileInfo>
-        <OpenedFileInfo>
-          <option name="caretOffset" value="480" />
-          <option name="fileUrl" value="file://$PROJECT_DIR$/server1" />
+          <option name="caretOffset" value="520" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/mc.js" />
         </OpenedFileInfo>
       </list>
     </option>

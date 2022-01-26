@@ -18,7 +18,7 @@ con.connect((err) => {
 const getUsersID = (request, response) => {
     console.log("===========")
     //console.log(request)
-    const queryCommand = `SELECT * FROM table1 WHERE id = '${request.params.id}'`
+    const queryCommand = `SELECT * FROM table1 WHERE id = '${parseInt(request.params.id)}'`
     console.log(queryCommand)
     con.query(queryCommand, (error, results) => {
         console.log(results)
@@ -54,7 +54,7 @@ const getUsers = (request, response) => {
 
 const createUser = (request, response) => {
     console.log("===========")
-    let data = {
+    const data = {
         id: request.body.id,
         name: request.body.name,
         email: request.body.email,
@@ -80,9 +80,81 @@ const createUser = (request, response) => {
     console.log("===========")
 }
 
+const checkUser = async (id) => {
+    const queryCommand = `SELECT * FROM table1 WHERE id = '${id}'`
+    return new Promise((resolve, reject) => {
+        con.query(queryCommand, (error, results) => {
+            if (!results[0]) {
+                console.log(`No data with id ${id}`)
+                reject(`No data with id ${id}`)
+            } else {
+                console.log(`Success: Data found with id '${id}'`)
+                resolve(results[0])
+            }
+        })
+    }).catch(function() {
+        console.log("reject")
+        return "nope"
+    })
+}
+const updateUser = async (request, response) => {
+    console.log("===========")
+    const data = await checkUser(parseInt(request.params.id))
+    if (data !== "nope") {
+        let data2 = {
+            id: parseInt(request.params.id),
+            name: request.body.name,
+            email: request.body.email,
+            age: request.body.age
+        }
+        if (data2.name === undefined) {
+            data2.name = data.name
+        }
+        if (data2.age === undefined) {
+            data2.age = data.age
+        }
+        if (data2.email === undefined) {
+            data2.email = data.email
+        }
+
+        const command = `UPDATE table1 SET name = '${data2.name}',
+        email = '${data2.email}',
+        age = '${data2.age}'
+        WHERE id = '${data2.id}';`
+
+        con.query(command, (error, results) => {
+            if (error) {
+                response.json(
+                    {
+                        status: "error",
+                        message: error
+                    }
+                )
+            } else {
+                console.log("Results: " + JSON.stringify(results))
+                response.json(
+                    {
+                        status: "success",
+                        message: data2
+                    }
+                )
+            }
+        })
+    } else {
+        response.json(
+            {
+                status: "error",
+                message: "This user does not exist"
+            }
+        )
+    }
+
+    console.log("===========")
+}
+
 module.exports = {
     getUsersID,
     getUsers,
     createUser,
-    // getDB
+    updateUser
 }

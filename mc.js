@@ -12,6 +12,7 @@ const mc_query = (request, response) => {
 
     const urlPath = request.url;
     console.log("urlPath", urlPath)
+
     const queryData = url.parse(request.url, true).query
     console.log("queryData: ", queryData)
 
@@ -19,10 +20,10 @@ const mc_query = (request, response) => {
     console.log("strippedUrl: ", strippedUrl)
 
     let mc_url = queryData.mc_url
-    console.log(mc_url)
+    console.log("mc_url", mc_url)
 
-    console.log("lekérdezés indult");
     if (mc_url === undefined) {
+        console.log("No URL provided");
         response.end("/request he");
     } else {
         util.status(mc_url, 25565, options)
