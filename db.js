@@ -17,11 +17,10 @@ con.connect((err) => {
 
 const getUsersID = (request, response) => {
     console.log("===========")
-    //console.log(request)
     const queryCommand = `SELECT * FROM table1 WHERE id = '${parseInt(request.params.id)}'`
-    console.log(queryCommand)
+    //console.log(queryCommand)
     con.query(queryCommand, (error, results) => {
-        console.log(results)
+        //console.log(results)
         if (!results[0]) {
             response.json({
                 status: "Nope"
@@ -152,9 +151,32 @@ const updateUser = async (request, response) => {
     console.log("===========")
 }
 
+const deleteUser = (request, response) => {
+    console.log("===========")
+    const queryCommand = `DELETE FROM table1 WHERE id = '${parseInt(request.params.id)}';`
+    console.log(queryCommand)
+    con.query(queryCommand, (error, results) => {
+        console.log(results)
+        console.log(error)
+        if (error) {
+            response.json({
+                status: "error",
+                message: error
+            })
+        } else {
+            response.json({
+                status: "success",
+                message: `User deleted with id '${parseInt(request.params.id)}'`
+            })
+        }
+    })
+    console.log("===========")
+}
+
 module.exports = {
     getUsersID,
     getUsers,
     createUser,
-    updateUser
+    updateUser,
+    deleteUser
 }

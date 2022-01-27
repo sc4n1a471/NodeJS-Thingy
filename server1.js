@@ -19,5 +19,6 @@ app.get("/api", db.getUsers);
 app.get("/api/:id", db.getUsersID)
 app.post("/api", db.createUser)
 app.put("/api/:id", updateUser)
+app.delete("/api/:id", db.deleteUser)
 
 //hello
