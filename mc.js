@@ -10,27 +10,22 @@ const options = {
 const mc_query = (request, response) => {
     console.log("===========")
 
-    const urlPath = request.url;
-    console.log("urlPath", urlPath)
-
-    const queryData = url.parse(request.url, true).query
-    console.log("queryData: ", queryData)
-
-    const strippedUrl = urlPath.substring(0, urlPath.indexOf("?"))
-    console.log("strippedUrl: ", strippedUrl)
-
-    let mc_url = queryData.mc_url
-    console.log("mc_url", mc_url)
+    console.log("Domain/IP: ", request.query.mc_url)
+    let mc_url = request.query.mc_url
 
     if (mc_url === undefined) {
         console.log("No URL provided");
-        response.end("/request he");
+        response.json({
+            status: "error",
+            message: "No domain/IP address provided"
+        });
     } else {
         util.status(mc_url, 25565, options)
             .then((result) => {
-                response.end(JSON.stringify(result));
-
-            }).catch((error) => console.error(error));
+                response.json(result)
+            }).catch((error) => {
+                response.json(error)
+        });
     }
     console.log("===========")
 }
