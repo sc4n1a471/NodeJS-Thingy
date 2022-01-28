@@ -12,19 +12,15 @@
           <option name="fileUrl" value="file://$PROJECT_DIR$/token.txt" />
         </OpenedFileInfo>
         <OpenedFileInfo>
-          <option name="caretOffset" value="535" />
-          <option name="fileUrl" value="file://$PROJECT_DIR$/server1.js" />
-        </OpenedFileInfo>
-        <OpenedFileInfo>
-          <option name="caretOffset" value="4393" />
-          <option name="fileUrl" value="file://$PROJECT_DIR$/db.js" />
-        </OpenedFileInfo>
-        <OpenedFileInfo>
-          <option name="caretOffset" value="324" />
+          <option name="caretOffset" value="292" />
           <option name="fileUrl" value="file://$PROJECT_DIR$/mc.js" />
         </OpenedFileInfo>
         <OpenedFileInfo>
-          <option name="caretOffset" value="4393" />
+          <option name="caretOffset" value="350" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/server1.js" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="789" />
           <option name="fileUrl" value="file://$PROJECT_DIR$/db.js" />
         </OpenedFileInfo>
       </list>

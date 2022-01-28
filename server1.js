@@ -3,7 +3,6 @@ const app = express()
 
 const db = require('./db.js')
 const mc = require('./mc.js')
-const {updateUser} = require("./db");
 
 app.use(express.json())
 
@@ -15,10 +14,10 @@ app.get("/", async (req, res) => {
     res.json("👋");
 });
 app.get("/request", mc.mc_query);
-app.get("/api", db.getUsers);
-app.get("/api/:id", db.getUsersID)
-app.post("/api", db.createUser)
-app.put("/api/:id", updateUser)
-app.delete("/api/:id", db.deleteUser)
+app.get("/api", db.getData);
+app.get("/api/:id", db.getDataByID)
+app.post("/api", db.createData)
+app.put("/api/:id", db.updateData)
+app.delete("/api/:id", db.deleteData)
 
 //hello
