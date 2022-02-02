@@ -15,39 +15,42 @@ con.connect((err) => {
     }
 })
 
-const getTable = (request) => {
-    console.log("====== getTable ======")
+const getTable = async (request) => {
+    console.log("====== getTable start ======")
     console.log("Query: ",request.query)
-    if (request.query !== undefined) {
-        console.log("Query = undefined?: ", request.query.table === undefined)
-    }
-    if (request.query.table === undefined) {
-        console.log(request.body)
-        if (request.body.name !== undefined) {
-            console.log("found: table1")
-            console.log("====== getTable ======")
-            return "table1"
-        } else if (request.body.brand !== undefined) {
-            console.log("found: table2")
-            console.log("====== getTable ======")
-            return "table2"
+    return new Promise((resolve, reject) => {
+        if (request.query !== undefined) {
+            console.log("Query = undefined?: ", request.query.table === undefined)
         }
-    } else {
-        console.log("Table: ", request.query.table)
-        let table = request.query.table
-        // if (table === undefined) {
-        //     console.log("Táblacsere")
-        //     table = 'table1'
-        // }
-        return table
-    }
-    console.log("====== getTable ======")
+        if (request.query.table === undefined) {
+            console.log("Body: ", request.body)
+            if (request.body.name !== undefined) {
+                console.log("found: table1")
+                console.log("====== getTable stop ======")
+                resolve("table1")
+            } else if (request.body.brand !== undefined) {
+                console.log("found: table2")
+                console.log("====== getTable stop ======")
+                resolve("table2")
+            }
+        } else {
+            console.log("Table: ", request.query.table)
+            let table = request.query.table
+            console.log("====== getTable stop ======")
+            resolve(table)
+        }
+        resolve("nyeh")
+    }).catch(function() {
+        console.log("reject")
+        console.log("====== getTable stop ======")
+        return "hellno"
+    })
 }
 
-const getDataByID = (request, response) => {
+const getDataByID = async (request, response) => {
     console.log("===========")
 
-    const table = getTable(request)
+    const table = await getTable(request)
     console.log("Table: ", table)
 
     const queryCommand = `SELECT * FROM ${table} WHERE id = '${parseInt(request.params.id)}'`
@@ -67,10 +70,10 @@ const getDataByID = (request, response) => {
     console.log("===========")
 }
 
-const getData = (request, response) => {
+const getData = async (request, response) => {
     console.log("===========")
 
-    const table = getTable(request)
+    const table = await getTable(request)
     console.log("Table: ", table)
 
     const queryCommand = `SELECT * FROM ${table};`
@@ -88,55 +91,61 @@ const getData = (request, response) => {
     console.log("===========")
 }
 
-const createData = (request, response) => {
+const createData = async (request, response) => {
     console.log("===========")
+    console.log("request.body: ",request.body)
 
-    const table = getTable(request, response)
-    console.log("Table: ", table)
+    if (request.body.id !== undefined) {
+        const table = await getTable(request, response)
+        //console.log("Table: ", table)
 
-    let data
+        let data
 
-    if (table === 'table1') {
-        data = {
-            id: request.body.id,
-            name: request.body.name,
-            email: request.body.email,
-            age: request.body.age
+        if (table === 'table1') {
+            data = {
+                id: request.body.id,
+                name: request.body.name,
+                email: request.body.email,
+                age: request.body.age
+            }
+        } else if (table === 'table2') {
+            data = {
+                id: request.body.id,
+                brand: request.body.brand,
+                model: request.body.model,
+                year: request.body.year
+            }
         }
-    } else if (table === 'table2') {
-        data = {
-            id: request.body.id,
-            brand: request.body.brand,
-            model: request.body.model,
-            year: request.body.year
-        }
+
+        console.log("data: " ,data)
+
+        let command = `INSERT INTO ${table} VALUES (?, ?, ?, ?)`;
+
+        con.query(command, Object.values(data), (error) => {
+            if (error) {
+                response.json({
+                    status: "fail",
+                    message: error.code
+                })
+            } else {
+                response.json({
+                    status: "success",
+                    message: data
+                })
+            }
+        })
+    } else {
+        response.json({
+            status: "fail",
+            message: "http body does not exist"
+        })
     }
-
-    console.log(data)
-
-    let command = `INSERT INTO ${table} VALUES (?, ?, ?, ?)`;
-
-    con.query(command, Object.values(data), (error) => {
-        if (error) {
-            response.json({
-                status: "fail",
-                message: error.code
-            })
-        } else {
-            response.json({
-                status: "success",
-                message: data
-            })
-        }
-    })
     console.log("===========")
 }
 
 const checkData = async (id, table) => {
     console.log("====== checkData ======")
-    // const table = getTable(request)
     console.log("table passed to checkData: ", table)
-
     const queryCommand = `SELECT * FROM ${table} WHERE id = '${id}'`
     return new Promise((resolve, reject) => {
         con.query(queryCommand, (error, results) => {
@@ -234,10 +243,10 @@ const updateData = async (request, response) => {
     console.log("=========== updateData ===========")
 }
 
-const deleteData = (request, response) => {
+const deleteData = async (request, response) => {
     console.log("===========")
 
-    const table = getTable(request)
+    const table = await getTable(request)
     console.log("Table: ", table)
 
     const id = parseInt(request.params.id)
