@@ -121,7 +121,9 @@ const createData = async (request, response) => {
 
         let command = `INSERT INTO ${table} VALUES (?, ?, ?, ?)`;
 
+
         con.query(command, Object.values(data), (error) => {
+            console.log("values: ", Object.values(data))
             if (error) {
                 response.json({
                     status: "fail",
@@ -140,6 +142,7 @@ const createData = async (request, response) => {
             message: "http body does not exist"
         })
     }
+    //console.log(response)
     console.log("===========")
 }
 
@@ -167,7 +170,7 @@ const checkData = async (id, table) => {
 const updateData = async (request, response) => {
     console.log("=========== updateData ===========")
 
-    const table = getTable(request)
+    const table = await getTable(request)
     console.log("Table I got: ", table)
 
     const data = await checkData(parseInt(request.params.id), table)
@@ -178,10 +181,10 @@ const updateData = async (request, response) => {
         if (table === 'table1') {
             console.log("Applied schema is for: table1")
             data2 = {
-                id: parseInt(request.params.id),
                 name: request.body.name,
                 email: request.body.email,
-                age: request.body.age
+                age: request.body.age,
+                id: parseInt(request.params.id)
             }
             if (data2.name === undefined) {
                 data2.name = data.name
@@ -193,27 +196,37 @@ const updateData = async (request, response) => {
                 data2.email = data.email
             }
 
-            command = `UPDATE ${table} SET name = '${data2.name}',
-                email = '${data2.email}',
-                age = '${data2.age}'
-                WHERE id = '${data2.id}';`
+            command = `UPDATE ${table} SET name = (?),
+                email = (?),
+                age = (?)
+                WHERE id = (?);`
         } else if (table === 'table2') {
             console.log("Applied schema is for: table2")
             data2 = {
-                id: parseInt(request.params.id),
                 brand: request.body.brand,
                 model: request.body.model,
-                year: request.body.year
+                year: request.body.year,
+                id: parseInt(request.params.id)
             }
-            command = `UPDATE ${table} SET brand = '${data2.brand}',
-                model = '${data2.model}',
-                year = '${data2.year}'
-                WHERE id = '${data2.id}';`
+            if (data2.brand === undefined) {
+                data2.brand = data.brand
+            }
+            if (data2.model === undefined) {
+                data2.model = data.model
+            }
+            if (data2.year === undefined) {
+                data2.year = data.year
+            }
+
+            command = `UPDATE ${table} SET brand = (?),
+                model = (?),
+                year = (?)
+                WHERE id = (?);`
         }
 
-        console.log("Created command: ", command)
+        //console.log("Created command: ", command)
 
-        con.query(command, (error, results) => {
+        con.query(command, Object.values(data2),(error, results) => {
             if (error) {
                 response.json(
                     {
