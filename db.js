@@ -63,7 +63,10 @@ const getDataByID = async (request, response) => {
                 message: error
             })
         } else {
-            response.json(results[0])
+            response.json({
+                status: "success",
+                message: results
+            })
         }
     })
 
@@ -75,18 +78,23 @@ const getData = async (request, response) => {
 
     const table = await getTable(request)
     console.log("Table: ", table)
+    //console.log("nyeh")
 
     const queryCommand = `SELECT * FROM ${table};`
     console.log(queryCommand)
     con.query(queryCommand, (error, results) => {
-        console.log(results)
         if (!results) {
             response.json({
-                status: "Nope"
+                status: "error",
+                message: error.code
             })
         } else {
-            response.json(results)
+            response.json({
+                status: "success",
+                message: results
+            })
         }
+        //console.log(response.body)
     })
     console.log("===========")
 }
@@ -123,7 +131,7 @@ const createData = async (request, response) => {
 
 
         con.query(command, Object.values(data), (error) => {
-            console.log("values: ", Object.values(data))
+            //console.log("values: ", Object.values(data))
             if (error) {
                 response.json({
                     status: "fail",
