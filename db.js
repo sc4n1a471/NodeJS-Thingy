@@ -56,7 +56,7 @@ const getDataByID = async (request, response) => {
     const queryCommand = `SELECT * FROM ${table} WHERE id = '${parseInt(request.params.id)}'`
     console.log(queryCommand)
     con.query(queryCommand, (error, results) => {
-        //console.log(results)
+        console.log(results)
         if (!results[0]) {
             response.json({
                 status: "error",
