@@ -6,6 +6,7 @@ const con = mysql.createConnection({
     password: "123456789A",
     database: "js_thingy"
 });
+const cc = require('./commandCreator.js')
 
 con.connect((err) => {
     if (err) {
@@ -24,11 +25,11 @@ const getTable = async (request) => {
         }
         if (request.query.table === undefined) {
             console.log("Body: ", request.body)
-            if (request.body.name !== undefined) {
+            if (request.body.name !== undefined || request.body.email !== undefined || request.body.age !== undefined) {
                 console.log("found: table1")
                 console.log("====== getTable stop ======")
                 resolve("table1")
-            } else if (request.body.brand !== undefined) {
+            } else if (request.body.brand !== undefined || request.body.model !== undefined || request.body.year !== undefined) {
                 console.log("found: table2")
                 console.log("====== getTable stop ======")
                 resolve("table2")
@@ -129,13 +130,12 @@ const createData = async (request, response) => {
 
         let command = `INSERT INTO ${table} VALUES (?, ?, ?, ?)`;
 
-
         con.query(command, Object.values(data), (error) => {
-            //console.log("values: ", Object.values(data))
+            //console.log(command, Object.values(data))
             if (error) {
                 response.json({
                     status: "fail",
-                    message: error.code
+                    message: error
                 })
             } else {
                 response.json({
@@ -194,12 +194,15 @@ const updateData = async (request, response) => {
                 age: request.body.age,
                 id: parseInt(request.params.id)
             }
+
             if (data2.name === undefined) {
                 data2.name = data.name
             }
+
             if (data2.age === undefined) {
                 data2.age = data.age
             }
+
             if (data2.email === undefined) {
                 data2.email = data.email
             }
@@ -216,25 +219,22 @@ const updateData = async (request, response) => {
                 year: request.body.year,
                 id: parseInt(request.params.id)
             }
-            if (data2.brand === undefined) {
-                data2.brand = data.brand
-            }
-            if (data2.model === undefined) {
-                data2.model = data.model
-            }
-            if (data2.year === undefined) {
-                data2.year = data.year
-            }
 
-            command = `UPDATE ${table} SET brand = (?),
-                model = (?),
-                year = (?)
-                WHERE id = (?);`
+            // ha nincs megadva érték a http body-ban, akkor tartsa meg az adatbázisban lévőt
+            // ha megegyeznek a body-ban lévő értékek az adatbázis értékeivel, annak megfelelően frissítse az adatbázis nem egyező értékeit
+
+            command = cc.commandCreator(data, data2)
+            console.log("Received command:", command)
+
+            //command_old = `UPDATE ${table} SET brand = (?),
+            //    model = (?),
+            //    year = (?)
+            //    WHERE id = (?);`
         }
 
-        //console.log("Created command: ", command)
+        // console.log("Created command: ", command)
 
-        con.query(command, Object.values(data2),(error, results) => {
+        con.query(command,(error, results) => {
             if (error) {
                 response.json(
                     {
