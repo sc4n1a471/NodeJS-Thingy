@@ -20,16 +20,20 @@
           <option name="fileUrl" value="file://$PROJECT_DIR$/db.js" />
         </OpenedFileInfo>
         <OpenedFileInfo>
-          <option name="caretOffset" value="230" />
-          <option name="fileUrl" value="file://$PROJECT_DIR$/test.js" />
-        </OpenedFileInfo>
-        <OpenedFileInfo>
           <option name="caretOffset" value="283" />
           <option name="fileUrl" value="file://$PROJECT_DIR$/server1.js" />
         </OpenedFileInfo>
         <OpenedFileInfo>
-          <option name="caretOffset" value="561" />
+          <option name="caretOffset" value="678" />
           <option name="fileUrl" value="file://$PROJECT_DIR$/commandCreator.js" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="4063" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/db.js" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="0" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/test.js" />
         </OpenedFileInfo>
       </list>
     </option>
