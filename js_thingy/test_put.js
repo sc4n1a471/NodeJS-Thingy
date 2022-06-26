@@ -1,4 +1,4 @@
-const db = require('./db.js')
+const db = require('./cars_db.js')
 
 const checkData = async (id, table) => {
     console.log("====== checkData ======")

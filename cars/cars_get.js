@@ -1,12 +1,13 @@
-const db = require('./db.js')
+const db = require('/cars/cars_db.js')
 
 const getDataByID = async (request, response) => {
     console.log("===========")
 
-    const table = await db.getTable(request)
+    // const table = await db.getTable(request)
+    const table = "table1"
     console.log("Table: ", table)
 
-    const queryCommand = `SELECT * FROM ${table} WHERE id = '${parseInt(request.params.id)}'`
+    const queryCommand = `SELECT * FROM ${table} WHERE license_plate = '${parseInt(request.params.license_plate)}'`
     console.log(queryCommand)
     db.con.query(queryCommand, (error, results) => {
         console.log(results)
@@ -29,7 +30,8 @@ const getDataByID = async (request, response) => {
 const getData = async (request, response) => {
     console.log("===========")
 
-    const table = await db.getTable(request)
+    // const table = await db.getTable(request)
+    const table = "table1"
     console.log("Table: ", table)
     //console.log("nyeh")
 

@@ -1,4 +1,4 @@
-const db = require('./db.js')
+const db = require('./cars_db.js')
 
 const createData = async (request, response) => {
     console.log("===========")
