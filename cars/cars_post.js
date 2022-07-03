@@ -1,13 +1,13 @@
-const db = require('/cars/cars_db.js')
+const db = require('../database/database.js')
 const {request} = require("express");
-const carModel = require("/cars/car_model.js")
-const {Car} = require("../cars/car_model");
+// const carModel = require("car_model.js")
+const {Car} = require("./car_model.js");
 
 const createData = async (request, response) => {
     console.log("===========")
     console.log("request.body: ",request.body)
 
-    if (request.body.id !== undefined) {
+    if (request.body.license_plate !== undefined) {
         // const table = await db.getTable(request, response)
         const table = "table1"
         //console.log("Table: ", table)
@@ -23,7 +23,7 @@ const createData = async (request, response) => {
             //     age: request.body.age
             // }
 
-            newData = new Car(rb.license_plate, rb.brand, rb.model)
+            newData = new Car(rb.license_plate, rb.brand, rb.model, rb.codename, rb.year, rb.comment)
 
         // } else if (table === 'table2') {
         //     data = {
@@ -36,9 +36,9 @@ const createData = async (request, response) => {
 
         console.log("newData: " , newData)
 
-        let command = `INSERT INTO ${table} VALUES (?, ?, ?)`;
+        let command = `INSERT INTO ${table} VALUES (?, ?, ?, ?, ?, ?)`;
 
-        db.con.query(command, Object.values(data), (error) => {
+        db.con_cars.query(command, Object.values(newData), (error) => {
             //console.log(command, Object.values(data))
             if (error) {
                 response.json({
@@ -48,7 +48,7 @@ const createData = async (request, response) => {
             } else {
                 response.json({
                     status: "success",
-                    message: data
+                    message: newData
                 })
             }
         })

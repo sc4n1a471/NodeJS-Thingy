@@ -1,11 +1,13 @@
-const db = require('./cars_db.js')
+const test_table = require('./test_table.js')
+const db = require('../database/database.js')
+const cc = require('../commandCreator.js')
 
 const checkData = async (id, table) => {
     console.log("====== checkData ======")
     console.log("table passed to checkData: ", table)
     const queryCommand = `SELECT * FROM ${table} WHERE id = '${id}'`
     return new Promise((resolve, reject) => {
-        db.con.query(queryCommand, (error, results) => {
+        db.con_test.query(queryCommand, (error, results) => {
             if (!results[0]) {
                 console.log(`No data with id ${id}`)
                 reject(`No data with id ${id}`)
@@ -24,7 +26,7 @@ const checkData = async (id, table) => {
 const updateData = async (request, response) => {
     console.log("=========== updateData ===========")
 
-    const table = await db.getTable(request)
+    const table = await test_table.getTable(request)
     console.log("Table I got: ", table)
 
     const data = await checkData(parseInt(request.params.id), table)
@@ -69,7 +71,7 @@ const updateData = async (request, response) => {
             // ha nincs megadva érték a http body-ban, akkor tartsa meg az adatbázisban lévőt
             // ha megegyeznek a body-ban lévő értékek az adatbázis értékeivel, annak megfelelően frissítse az adatbázis nem egyező értékeit
 
-            command = db.cc.commandCreator(data, data2)
+            command = cc.commandCreator(data, data2)
             console.log("Received command:", command)
 
             //command_old = `UPDATE ${table} SET brand = (?),
@@ -80,7 +82,7 @@ const updateData = async (request, response) => {
 
         // console.log("Created command: ", command)
 
-        db.con.query(command,(error, results) => {
+        db.con_test.query(command,(error, results) => {
             if (error) {
                 response.json(
                     {

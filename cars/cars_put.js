@@ -1,12 +1,14 @@
-const db = require('/cars/cars_db.js')
-const carModel = require('/cars/car_model.js')
+const db = require('../database/database.js')
+const cc = require('../commandCreator.js')
+const carModel = require('./car_model.js')
+const {Car} = require("./car_model");
 
-const checkData = async (id, table) => {
+const checkData = async (license_plate, table) => {
     console.log("====== checkData ======")
     console.log("table passed to checkData: ", table)
     const queryCommand = `SELECT * FROM ${table} WHERE license_plate = '${license_plate}'`
     return new Promise((resolve, reject) => {
-        db.con.query(queryCommand, (error, results) => {
+        db.con_cars.query(queryCommand, (error, results) => {
             if (!results[0]) {
                 console.log(`No car with license plate ${license_plate}`)
                 reject(`No car with license plate ${license_plate}`)
@@ -28,26 +30,58 @@ const updateData = async (request, response) => {
     // const table = await db.getTable(request)
     const table = "table1"
     console.log("Table I got: ", table)
+    // console.log((request.params))
 
-    const newData = await checkData(parseInt(request.params.license_plate), table)
-    if (newData !== "nope") {
+    const oldData = await checkData(request.params.license_plate, table)
+
+    if (oldData !== "nope") {
+        let oldCar = new Car(oldData.license_plate, oldData.brand, oldData.model, oldData.codename, oldData.year, oldData.comment)
+        // let oldCarInfo = oldCar.info()
+
         let finalizedData
+        // let newCarInfo = {}
         let command
         let rb = request.body
 
         if (table === 'table1') {
             console.log("Applied schema is for: table1")
-            // finalizedData = {
-            //     name: request.body.name,
-            //     email: request.body.email,
-            //     age: request.body.age,
-            //     id: parseInt(request.params.id)
-            // }
+
             finalizedData = new carModel.Car(
-                rb.license_plate,
-                rb.brand,
-                rb.model
+                request.params.license_plate
             )
+
+            // console.log("new: ", rb)
+            // console.log("old: ", oldCar)
+            // console.log("finalized1: ", finalizedData)
+
+            for (let [key, value] of Object.entries(oldCar)) {
+                // console.log("key: ", key)
+                // console.log("value: ", value)
+                for (let [newKey, newValue] of Object.entries(rb)) {
+                    // console.log("newkey: ", newKey)
+                    // console.log("newvalue: ", newValue)
+                    if (key === newKey) {
+                        finalizedData[key] = newValue;
+                        // console.log("changed: ", key)
+                        // console.log("to: ", newValue);
+                        break;
+                    } else {
+                        finalizedData[key] = value;
+                    }
+                    // console.log("===")
+
+                }
+                // console.log(finalizedData)
+                // console.log("=======")
+
+            }
+            // console.log("finalized2: ", finalizedData)
+
+            // for (let i = 0; i < 6; i++) {
+            //     console.log(oldCarInfo[i])
+            // }
+
+
 
             // if (finalizedData.name === undefined) {
             //     finalizedData.name = newData.name
@@ -61,9 +95,13 @@ const updateData = async (request, response) => {
             //     finalizedData.email = newData.email
             // }
 
-            command = `UPDATE ${table} SET brand = (?),
-                model = (?),
-                WHERE license_plate = (?);`
+            // command = `UPDATE ${table} SET  = (?),
+            //     model = (?),
+            //     WHERE license_plate = (?);`
+
+            command = cc.commandCreator(finalizedData)
+            console.log("Received command:", command)
+
         }
         // } else if (table === 'table2') {
         //     console.log("Applied schema is for: table2")
@@ -88,7 +126,7 @@ const updateData = async (request, response) => {
 
         // console.log("Created command: ", command)
 
-        db.con.query(command,(error, results) => {
+        db.con_cars.query(command,(error, results) => {
             if (error) {
                 response.json(
                     {

@@ -1,20 +1,22 @@
-const mysql = require("mysql2");
-const {request, response} = require("express");
-const con = mysql.createConnection({
-    host: "192.168.5.172",
-    user: "mysql_user",
-    password: "123456789A",
-    database: "js_thingy"
-});
-const cc = require('../commandCreator.js')
+// const mysql = require("mysql2");
+// // const {request, response} = require("express");
+// const con = mysql.createConnection({
+//     host: "10.11.12.140",
+//     user: "mysql_user",
+//     password: "123456789A",
+//     database: "js_thingy"
+// });
+// const cc = require('../commandCreator.js')
+//
+// con.connect((err) => {
+//     if (err) {
+//         throw err;
+//     } else {
+//         console.log("Connected to MySQL")
+//     }
+// })
 
-con.connect((err) => {
-    if (err) {
-        throw err;
-    } else {
-        console.log("Connected to MySQL")
-    }
-})
+const db = require('../database/database.js')
 
 const getTable = async (request) => {
     console.log("====== getTable start ======")
@@ -49,7 +51,5 @@ const getTable = async (request) => {
 }
 
 module.exports = {
-    getTable,
-    con,
-    cc
+    getTable
 }

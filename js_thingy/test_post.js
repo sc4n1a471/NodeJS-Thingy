@@ -1,11 +1,12 @@
-const db = require('./cars_db.js')
+const test_table = require('./test_table.js')
+const db = require('../database/database.js')
 
 const createData = async (request, response) => {
     console.log("===========")
     console.log("request.body: ",request.body)
 
     if (request.body.id !== undefined) {
-        const table = await db.getTable(request, response)
+        const table = await test_table.getTable(request, response)
         //console.log("Table: ", table)
 
         let data
@@ -30,7 +31,7 @@ const createData = async (request, response) => {
 
         let command = `INSERT INTO ${table} VALUES (?, ?, ?, ?)`;
 
-        db.con.query(command, Object.values(data), (error) => {
+        db.con_test.query(command, Object.values(data), (error) => {
             //console.log(command, Object.values(data))
             if (error) {
                 response.json({

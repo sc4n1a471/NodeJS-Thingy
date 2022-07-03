@@ -1,16 +1,17 @@
-const db = require('./db.js')
+const db = require('../database/database.js')
 
 const deleteData = async (request, response) => {
     console.log("===========")
 
-    const table = await db.getTable(request)
+    // const table = await db.getTable(request)
+    const table = "table1"
     console.log("Table: ", table)
 
-    const id = parseInt(request.params.id)
+    const license_plate = request.params.license_plate
 
-    const queryCommand = `DELETE FROM ${table} WHERE id = '${id}';`
+    const queryCommand = `DELETE FROM ${table} WHERE license_plate = '${license_plate}';`
     console.log(queryCommand)
-    db.con.query(queryCommand, (error, results) => {
+    db.con_cars.query(queryCommand, (error, results) => {
         if (error) {
             response.json({
                 status: "error",
@@ -19,7 +20,7 @@ const deleteData = async (request, response) => {
         } else {
             response.json({
                 status: "success",
-                message: `Data deleted with id '${id}' from table '${table}'`
+                message: `Car deleted with license plate '${license_plate}'!'`
             })
         }
     })
