@@ -3,7 +3,6 @@ const db = require('../database/database.js')
 const deleteData = async (request, response) => {
     console.log("===========")
 
-    // const table = await db.getTable(request)
     const table = "table1"
     console.log("Table: ", table)
 
@@ -15,12 +14,14 @@ const deleteData = async (request, response) => {
         if (error) {
             response.json({
                 status: "error",
-                message: error
+                message: error,
+                data: null
             })
         } else {
             response.json({
                 status: "success",
-                message: `Car deleted with license plate '${license_plate}'!'`
+                message: `Car deleted with license plate '${license_plate}'!'`,
+                data: null
             })
         }
     })

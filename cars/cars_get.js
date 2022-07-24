@@ -3,7 +3,6 @@ const db = require('../database/database.js')
 const getDataByID = async (request, response) => {
     console.log("===========")
 
-    // const table = await db.getTable(request)
     const table = "table1"
     console.log("Table: ", table)
 
@@ -14,12 +13,14 @@ const getDataByID = async (request, response) => {
         if (!results[0]) {
             response.json({
                 status: "error",
-                message: error
+                message: error,
+                data: null
             })
         } else {
             response.json({
                 status: "success",
-                message: results
+                message: null,
+                data: results
             })
         }
     })
@@ -30,10 +31,8 @@ const getDataByID = async (request, response) => {
 const getData = async (request, response) => {
     console.log("===========")
 
-    // const table = await db.getTable(request)
     const table = "table1"
     console.log("Table: ", table)
-    //console.log("nyeh")
 
     const queryCommand = `SELECT * FROM ${table};`
     console.log(queryCommand)
@@ -41,15 +40,16 @@ const getData = async (request, response) => {
         if (!results) {
             response.json({
                 status: "error",
-                message: error.code
+                message: error.code,
+                data: null
             })
         } else {
             response.json({
                 status: "success",
-                message: results
+                message: null,
+                data: results
             })
         }
-        //console.log(response.body)
     })
     console.log("===========")
 }

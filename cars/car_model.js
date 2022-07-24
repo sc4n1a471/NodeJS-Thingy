@@ -3,7 +3,7 @@ class Car {
                 brand = "nope",
                 model = "nope",
                 codename = "nope",
-                year = 1901,
+                year = 1911,
                 comment = "nope") {
         this.license_plate = license_plate;
         this.brand = brand;
