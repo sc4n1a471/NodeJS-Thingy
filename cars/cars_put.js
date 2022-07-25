@@ -7,6 +7,7 @@ const checkData = async (license_plate, table) => {
     console.log("====== checkData ======")
     console.log("table passed to checkData: ", table)
     const queryCommand = `SELECT * FROM ${table} WHERE license_plate = '${license_plate}'`
+    await db.connect()
     return new Promise((resolve, reject) => {
         db.con_cars.query(queryCommand, (error, results) => {
             if (!results[0]) {
@@ -90,7 +91,7 @@ const updateData = async (request, response) => {
             }
         )
     }
-
+    await db.endConnection()
     console.log("=========== updateData ===========")
 }
 

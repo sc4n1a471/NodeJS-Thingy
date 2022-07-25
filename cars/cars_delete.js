@@ -10,6 +10,8 @@ const deleteData = async (request, response) => {
 
     const queryCommand = `DELETE FROM ${table} WHERE license_plate = '${license_plate}';`
     console.log(queryCommand)
+
+    await db.connect()
     db.con_cars.query(queryCommand, (error, results) => {
         if (error) {
             response.json({
@@ -25,6 +27,7 @@ const deleteData = async (request, response) => {
             })
         }
     })
+    await db.endConnection();
     console.log("===========")
 }
 

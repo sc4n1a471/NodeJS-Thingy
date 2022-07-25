@@ -21,6 +21,7 @@ const createData = async (request, response) => {
 
         let command = `INSERT INTO ${table} VALUES (?, ?, ?, ?, ?, ?)`;
 
+        await db.connect()
         db.con_cars.query(command, Object.values(newData), (error) => {
             if (error) {
                 response.json({
@@ -42,6 +43,7 @@ const createData = async (request, response) => {
             message: "http body does not exist"
         })
     }
+    await db.endConnection();
     console.log("===========")
 }
 

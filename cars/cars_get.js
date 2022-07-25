@@ -8,6 +8,8 @@ const getDataByID = async (request, response) => {
 
     const queryCommand = `SELECT * FROM ${table} WHERE license_plate = '${parseInt(request.params.license_plate)}'`
     console.log(queryCommand)
+
+    await db.connect()
     db.con_cars.query(queryCommand, (error, results) => {
         console.log(results)
         if (!results[0]) {
@@ -24,7 +26,7 @@ const getDataByID = async (request, response) => {
             })
         }
     })
-
+    await db.endConnection();
     console.log("===========")
 }
 
@@ -36,6 +38,8 @@ const getData = async (request, response) => {
 
     const queryCommand = `SELECT * FROM ${table};`
     console.log(queryCommand)
+
+    await db.connect()
     db.con_cars.query(queryCommand, (error, results) => {
         if (!results) {
             response.json({
@@ -51,6 +55,7 @@ const getData = async (request, response) => {
             })
         }
     })
+    await db.endConnection();
     console.log("===========")
 }
 
