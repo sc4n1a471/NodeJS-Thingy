@@ -14,15 +14,27 @@ const createData = async (request, response) => {
 
         if (table === 'table1') {
 
-            newData = new Car(rb.license_plate, rb.brand, rb.model, rb.codename, rb.year, rb.comment)
+            if (rb.comment === "") {
+                rb.comment = null;
+            }
+
+            for (let key of Object.keys(rb)) {
+                if (rb[key] === "" || rb[key] === null) {
+                    console.log(rb[key])
+                    rb[key] = "DEFAULT_VALUE"
+                    console.log(rb[key])
+                }
+            }
+            newData = new Car(rb.license_plate, rb.brand, rb.model, rb.codename, rb.year, rb.comment, rb.is_new)
         }
 
         console.log("newData: " , newData)
 
-        let command = `INSERT INTO ${table} VALUES (?, ?, ?, ?, ?, ?)`;
+        let command = `INSERT INTO ${table} VALUES (?, ?, ?, ?, ?, ?, ?)`;
 
         db.con_cars.query(command, Object.values(newData), (error) => {
             if (error) {
+                console.log(error)
                 response.json({
                     status: "fail",
                     message: error,

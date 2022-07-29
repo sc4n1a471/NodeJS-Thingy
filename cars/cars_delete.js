@@ -12,6 +12,7 @@ const deleteData = async (request, response) => {
     console.log(queryCommand)
     db.con_cars.query(queryCommand, (error, results) => {
         if (error) {
+            console.log(error)
             response.json({
                 status: "error",
                 message: error,

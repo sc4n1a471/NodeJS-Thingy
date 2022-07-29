@@ -13,6 +13,7 @@ const getDataByID = async (request, response) => {
     db.con_cars.query(queryCommand, (error, results) => {
         console.log(results)
         if (!results[0]) {
+            console.log(error)
             response.json({
                 status: "error",
                 message: error,
@@ -42,6 +43,7 @@ const getData = async (request, response) => {
     // await db.connect()
     db.con_cars.query(queryCommand, (error, results) => {
         if (!results) {
+            console.log(error)
             response.json({
                 status: "error",
                 message: error.code,

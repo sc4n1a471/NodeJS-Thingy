@@ -33,7 +33,7 @@ const updateData = async (request, response) => {
     const oldData = await checkData(request.params.license_plate, table)
 
     if (oldData !== "nope") {
-        let oldCar = new Car(oldData.license_plate, oldData.brand, oldData.model, oldData.codename, oldData.year, oldData.comment)
+        let oldCar = new Car(oldData.license_plate, oldData.brand, oldData.model, oldData.codename, oldData.year, oldData.comment, oldData.is_new)
 
         let finalizedData
         let command
@@ -64,6 +64,7 @@ const updateData = async (request, response) => {
 
         db.con_cars.query(command,(error, results) => {
             if (error) {
+                console.log(error)
                 response.json(
                     {
                         status: "error",
