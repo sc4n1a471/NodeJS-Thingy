@@ -5,3 +5,4 @@ Ez lenni repository for NodeJS-Thingy
 |-----------|-------|----------------------|-------|----------------------|----------------------|
 | cars      | /cars | /cars/:license_plate | /cars | /cars/:license_plate | /cars/:license_plate |
 | js_thingy | /test | /test/:id            | /test | /test/:id            | /test/:id            |
+| mc        | -     | /mc/mcUrl?[url]      | -     | -                    | -                    |
