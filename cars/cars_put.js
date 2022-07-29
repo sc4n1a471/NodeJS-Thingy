@@ -86,7 +86,8 @@ const updateData = async (request, response) => {
         response.json(
             {
                 status: "error",
-                message: "This data does not exist"
+                message: "This data does not exist",
+                data: null
             }
         )
     }
