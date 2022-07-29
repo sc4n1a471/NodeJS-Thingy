@@ -9,18 +9,17 @@ const options = {
 
 const mc_query = (request, response) => {
     console.log("===========")
+    console.log("Domain/IP: ", request.query.mcUrl)
+    let mcUrl = request.query.mcUrl
 
-    console.log("Domain/IP: ", request.query.mc_url)
-    let mc_url = request.query.mc_url
-
-    if (mc_url === undefined) {
+    if (mcUrl === undefined) {
         console.log("No URL provided");
         response.json({
             status: "error",
             message: "No domain/IP address provided"
         });
     } else {
-        util.status(mc_url, 25565, options)
+        util.status(mcUrl, 25565, options)
             .then((result) => {
                 response.json(result)
             }).catch((error) => {

@@ -14,6 +14,7 @@ const deleteData = async (request, response) => {
     await db.connect()
     db.con_cars.query(queryCommand, (error, results) => {
         if (error) {
+            console.log(error)
             response.json({
                 status: "error",
                 message: error,

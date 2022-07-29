@@ -50,6 +50,12 @@ const commandCreator = (data) => {
         notHas.push(`comment = '${data.comment}'`)
     }
 
+    if (hasIt.is_new) {
+        where += ` AND is_new = '${data.is_new}'`
+    } else {
+        notHas.push(`is_new = '${data.is_new}'`)
+    }
+
     set += " " + notHas.join(",")
     command += set
     command += where

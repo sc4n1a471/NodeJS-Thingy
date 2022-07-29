@@ -20,7 +20,7 @@ app.listen(3000, "localhost", () => {
 app.get("/", async (req, res) => {
     res.json("👋");
 });
-app.get("/request", mc.mc_query);
+app.get("/mc", mc.mc_query);
 app.get("/test", test_get.getData);
 app.get("/test/:id", test_get.getDataByID)
 app.post("/test", test_post.createData)
