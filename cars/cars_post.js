@@ -40,7 +40,8 @@ const createData = async (request, response) => {
     } else {
         response.json({
             status: "fail",
-            message: "http body does not exist"
+            message: "http body does not exist",
+            data: null
         })
     }
     await db.endConnection();

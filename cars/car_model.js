@@ -1,10 +1,10 @@
 class Car {
     constructor(license_plate,
-                brand = "nope",
-                model = "nope",
-                codename = "nope",
-                year = 1911,
-                comment = "nope") {
+                brand = "DEFAULT_VALUE",
+                model = "DEFAULT_VALUE",
+                codename = "DEFAULT_VALUE",
+                year = 1901,
+                comment = "DEFAULT_VALUE") {
         this.license_plate = license_plate;
         this.brand = brand;
         this.model = model;
