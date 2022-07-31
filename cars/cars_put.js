@@ -7,9 +7,9 @@ const checkData = async (license_plate, table) => {
     console.log("====== checkData ======")
     console.log("table passed to checkData: ", table)
     const queryCommand = `SELECT * FROM ${table} WHERE license_plate = '${license_plate}'`
-    await db.connect()
+
     return new Promise((resolve, reject) => {
-        db.con_cars.query(queryCommand, (error, results) => {
+        db.pool_cars.query(queryCommand, (error, results) => {
             if (!results[0]) {
                 console.log(`No car with license plate ${license_plate}`)
                 reject(`No car with license plate ${license_plate}`)
@@ -63,7 +63,7 @@ const updateData = async (request, response) => {
 
         }
 
-        db.con_cars.query(command,(error, results) => {
+        db.pool_cars.query(command,(error, results) => {
             if (error) {
                 console.log(error)
                 response.json(
@@ -93,7 +93,6 @@ const updateData = async (request, response) => {
             }
         )
     }
-    await db.endConnection()
     console.log("=========== updateData ===========")
 }
 
