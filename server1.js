@@ -21,11 +21,11 @@ app.get("/", async (req, res) => {
     res.json("👋");
 });
 app.get("/mc", mc.mc_query);
-app.get("/test", test_get.getData);
-app.get("/test/:id", test_get.getDataByID)
-app.post("/test", test_post.createData)
-app.put("/test/:id", test_put.updateData)
-app.delete("/test/:id", test_delete.deleteData)
+// app.get("/test", test_get.getData);
+// app.get("/test/:id", test_get.getDataByID)
+// app.post("/test", test_post.createData)
+// app.put("/test/:id", test_put.updateData)
+// app.delete("/test/:id", test_delete.deleteData)
 
 app.get("/cars", cars_get.getData);
 app.get("/cars/:license_plate", cars_get.getDataByID)

@@ -20,9 +20,9 @@ const createData = async (request, response) => {
 
             for (let key of Object.keys(rb)) {
                 if (rb[key] === "" || rb[key] === null) {
-                    console.log(rb[key])
+                    // console.log(rb[key])
                     rb[key] = "DEFAULT_VALUE"
-                    console.log(rb[key])
+                    // console.log(rb[key])
                 }
             }
             newData = new Car(rb.license_plate, rb.brand, rb.model, rb.codename, rb.year, rb.comment, rb.is_new)
@@ -32,7 +32,7 @@ const createData = async (request, response) => {
 
         let command = `INSERT INTO ${table} VALUES (?, ?, ?, ?, ?, ?, ?)`;
 
-        db.con_cars.query(command, Object.values(newData), (error) => {
+        db.pool_cars.query(command, Object.values(newData), (error) => {
             if (error) {
                 console.log(error)
                 response.json({
