@@ -2,6 +2,7 @@ const db = require('../database/database.js')
 
 const getDataByID = async (request, response) => {
     console.log("===========")
+    // await db.connect()
 
     const table = "table1"
     console.log("Table: ", table)
@@ -25,7 +26,7 @@ const getDataByID = async (request, response) => {
             })
         }
     })
-
+    // await db.endConnection();
     console.log("===========")
 }
 
@@ -54,6 +55,7 @@ const getData = async (request, response) => {
             })
         }
     })
+    // await db.endConnection();
     console.log("===========")
 }
 
