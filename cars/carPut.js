@@ -1,7 +1,8 @@
 const db = require('../database/database.js')
 const cc = require('../commandCreator.js')
-const carModel = require('./car_model.js')
-const {Car} = require("./car_model");
+const carModel = require('./carModel.js')
+const {Car} = require("./carModel");
+const carBrands = require("./carBrands");
 
 const checkData = async (license_plate, table) => {
     console.log("====== checkData ======")
@@ -34,7 +35,7 @@ const updateData = async (request, response) => {
     const oldData = await checkData(request.params.license_plate, table)
 
     if (oldData !== "nope") {
-        let oldCar = new Car(oldData.license_plate, oldData.brand, oldData.model, oldData.codename, oldData.year, oldData.comment, oldData.is_new)
+        let oldCar = new Car(oldData.license_plate, oldData.brand_id, oldData.model, oldData.codename, oldData.year, oldData.comment, oldData.is_new, oldData.brand)
 
         let finalizedData
         let command
@@ -42,6 +43,18 @@ const updateData = async (request, response) => {
 
         if (table === 'table1') {
             console.log("Applied schema is for: table1")
+
+            carBrands.brands = await carBrands.queryBrands();
+            let brand_id = oldCar.brand_id
+            if (rb.brand !== undefined) {
+                console.log("New brand is in body")
+                for (let value of Object.values(carBrands.brands)) {
+                    if (rb.brand === value.brand) {
+                        brand_id = value.brand_id
+                        break;
+                    }
+                }
+            }
 
             finalizedData = new carModel.Car(
                 request.params.license_plate
@@ -58,10 +71,14 @@ const updateData = async (request, response) => {
                 }
             }
 
+            finalizedData.brand_id = brand_id
+
             command = cc.commandCreator(finalizedData)
             console.log("Received command:", command)
 
         }
+
+        console.log("newCar: ", finalizedData)
 
         db.pool_cars.query(command,(error, results) => {
             if (error) {

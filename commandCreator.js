@@ -6,6 +6,7 @@ const commandCreator = (data) => {
     // ha minden false-ra van állítva, akkor tökéletesen műkszik úgy tűnik, sooo ki lehet szedni nagy eséllyel
     let hasIt = {
         brand: false,
+        brand_id: false,
         model: false,
         codename: false,
         year: false,
@@ -20,10 +21,10 @@ const commandCreator = (data) => {
 
     let notHas = []
 
-    if (hasIt.brand) {
-        where += ` AND brand = '${data.brand}'`
+    if (hasIt.brand_id) {
+        where += ` AND brand_id = '${data.brand_id}'`
     } else {
-        notHas.push(`brand = '${data.brand}'`)
+        notHas.push(`brand_id = '${data.brand_id}'`)
     }
 
     if (hasIt.model) {
