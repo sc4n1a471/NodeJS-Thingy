@@ -1,10 +1,11 @@
 const express = require("express")
 const app = express()
 
-const cars_get = require('./cars/cars_get.js')
-const cars_post = require('./cars/cars_post.js')
-const cars_put = require('./cars/cars_put.js')
-const cars_delete = require('./cars/cars_delete.js')
+const carGet = require('./cars/carGet.js')
+const carPost = require('./cars/carPost.js')
+const carPut = require('./cars/carPut.js')
+const carDelete = require('./cars/carDelete.js')
+const carBrands = require('./cars/carBrands.js')
 const mc = require('./mc.js')
 const test_get = require("./js_thingy/test_get.js");
 const test_post = require("./js_thingy/test_post.js");
@@ -27,10 +28,11 @@ app.get("/mc", mc.mc_query);
 // app.put("/test/:id", test_put.updateData)
 // app.delete("/test/:id", test_delete.deleteData)
 
-app.get("/cars", cars_get.getData);
-app.get("/cars/:license_plate", cars_get.getDataByID)
-app.post("/cars", cars_post.createData)
-app.put("/cars/:license_plate", cars_put.updateData)
-app.delete("/cars/:license_plate", cars_delete.deleteData)
+app.get("/cars", carGet.getData);
+app.get("/carBrands", carBrands.getBrands);
+app.get("/cars/:license_plate", carGet.getDataByID)
+app.post("/cars", carPost.createData)
+app.put("/cars/:license_plate", carPut.updateData)
+app.delete("/cars/:license_plate", carDelete.deleteData)
 
 // helloo
