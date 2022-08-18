@@ -1,4 +1,4 @@
-const db = require('./db.js')
+const db = require('../database/database.js')
 
 const deleteData = async (request, response) => {
     console.log("===========")
