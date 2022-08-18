@@ -16,7 +16,7 @@ jobs:
         run: docker login -u ${{ secrets.DOCKERHUB_USERNAME }} 
              -p ${{ secrets.DOCKERHUB_PASSWD }}
       - name: Build Docker image
-        run: docker buildx build --platform linux/amd64,linux/arm64 --push -t $DOCKERHUB_REPO:latest .
+        run: docker buildx build --platform linux/amd64,linux/arm64 --push -t sc4n1a471/nodejs-thingy:latest .
       - name: Publish Docker image
         run: docker push $DOCKERHUB_REPO
 
