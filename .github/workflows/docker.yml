@@ -15,10 +15,12 @@ jobs:
       - name: Login to Docker Hub
         run: docker login -u ${{ secrets.DOCKERHUB_USERNAME }} 
              -p ${{ secrets.DOCKERHUB_PASSWD }}
+      - name: Buildx stuff
+        run: docker buildx create --use --name=mybuilder-cn --driver docker-container --driver-opt image=dockerpracticesig/buildkit:master
       - name: Build Docker image
         run: docker buildx build --platform linux/amd64,linux/arm64 --push -t sc4n1a471/nodejs-thingy:latest .
       - name: Publish Docker image
-        run: docker push $DOCKERHUB_REPO
+        run: docker push sc4n1a471/nodejs-thingy
 
   redeploy:
     name: Redeploy webhook call
