@@ -7,14 +7,14 @@ const carPut = require('./cars/carPut.js')
 const carDelete = require('./cars/carDelete.js')
 const carBrands = require('./cars/carBrands.js')
 const mc = require('./mc.js')
-const test_get = require("./js_thingy/test_get.js");
-const test_post = require("./js_thingy/test_post.js");
-const test_put = require("./js_thingy/test_put.js");
-const test_delete = require("./js_thingy/test_delete.js");
+// const test_get = require("./js_thingy/test_get.js");
+// const test_post = require("./js_thingy/test_post.js");
+// const test_put = require("./js_thingy/test_put.js");
+// const test_delete = require("./js_thingy/test_delete.js");
 
 app.use(express.json())
 
-app.listen(3000, "localhost", () => {
+app.listen(3000, "0.0.0.0", () => {
     console.log("Listening for request");
 });
 
