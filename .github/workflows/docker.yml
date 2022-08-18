@@ -13,7 +13,7 @@ jobs:
       REPO: ${{ secrets.DOCKERHUB_REPO }}
     steps:
       - name: Login to Docker Hub
-        run: docker login -u ${{ secrets.DOCKERHUB_USER }} 
+        run: docker login -u ${{ secrets.DOCKERHUB_USERNAME }} 
              -p ${{ secrets.DOCKERHUB_PASSWD }}
       - name: Build Docker image
         run: docker buildx build --platform linux/amd64,linux/arm64 --push -t $DOCKERHUB_REPO:latest -t $DOCKERHUB_REPO:${GITHUB_SHA::8} .
