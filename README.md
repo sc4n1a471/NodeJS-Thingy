@@ -1,4 +1,6 @@
 # NodeJS-Thingy
+[![Build, Publish, Redeploy](https://github.com/sc4n1a471/NodeJS-Thingy/actions/workflows/docker.yml/badge.svg)](https://github.com/sc4n1a471/NodeJS-Thingy/actions/workflows/docker.yml)
+
 Ez lenni repository for NodeJS-Thingy
 
 |           | GET        | GET_ID               | POST  | PUT                  | DELETE               |
