@@ -1,0 +1,11 @@
+version: '3'
+services:
+  nodejs-thingy:
+    image: nodejs-thingy
+    environment:
+      DB_HOST: default
+      DB_USER: default
+      DB_PASSWD: default
+      DB_NAME: default
+    ports:
+      - "3000:3000"
