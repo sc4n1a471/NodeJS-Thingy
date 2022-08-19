@@ -4,7 +4,7 @@ const table1 = "table1"
 const tableBrands = "brands"
 
 const getData = async (request, response) => {
-    console.log("===========")
+    // console.log("===========")
 
     const queryCommand = `
         SELECT 
@@ -23,7 +23,7 @@ const getData = async (request, response) => {
             ${table1}.brand_id = ${tableBrands}.brand_id
         ORDER BY 
             license_plate;`
-    console.log(queryCommand)
+    // console.log(queryCommand)
 
     db.pool_cars.query(queryCommand, (error, results) => {
         if (!results) {
@@ -33,11 +33,11 @@ const getData = async (request, response) => {
             responseCuccli(response, "success", null, results, null)
         }
     })
-    console.log("===========")
+    // console.log("===========")
 }
 
 const getDataByID = async (request, response) => {
-    console.log("===========")
+    // console.log("===========")
 
     const queryCommand = `
         SELECT 
@@ -58,17 +58,21 @@ const getDataByID = async (request, response) => {
             ${table1}.license_plate = '${(request.params.license_plate)}'
         ORDER BY 
             license_plate;`
-    console.log(queryCommand)
+    // console.log(queryCommand)
 
     db.pool_cars.query(queryCommand, (error, results) => {
-        if (!results[0]) {
-            console.log(error)
-            responseCuccli(response, "error", error, null, null)
+        if (results !== undefined) {
+            if (!results[0]) {
+                console.log(error)
+                responseCuccli(response, "error", error, null, null)
+            } else {
+                responseCuccli(response, "success", null, results, null)
+            }
         } else {
-            responseCuccli(response, "success", null, results, null)
+            responseCuccli(response, "error", "results is undefined", null, null)
         }
     })
-    console.log("===========")
+    // console.log("===========")
 }
 
 module.exports = {
