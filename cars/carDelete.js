@@ -1,33 +1,26 @@
 const db = require('../database/database.js')
+const responseCuccli = require("../database/response")
 
 const deleteData = async (request, response) => {
-    console.log("===========")
+    // console.log("===========")
 
     const table = "table1"
-    console.log("Table: ", table)
+    // console.log("Table: ", table)
 
     const license_plate = request.params.license_plate
 
     const queryCommand = `DELETE FROM ${table} WHERE license_plate = '${license_plate}';`
-    console.log(queryCommand)
+    // console.log(queryCommand)
 
     db.pool_cars.query(queryCommand, (error, results) => {
         if (error) {
             console.log(error)
-            response.json({
-                status: "error",
-                message: error,
-                data: null
-            })
+            responseCuccli(response, "error", error, null, null)
         } else {
-            response.json({
-                status: "success",
-                message: `Car deleted with license plate '${license_plate}'!'`,
-                data: null
-            })
+            responseCuccli(response, "success", `Car deleted with license plate '${license_plate}'!'`, null, null)
         }
     })
-    console.log("===========")
+    // console.log("===========")
 }
 
 module.exports = {
