@@ -1,5 +1,5 @@
 const db = require("../database/database");
-require('iconv-lite').encodingExists('foo')
+const responseCuccli = require("../database/response")
 
 let brands = null
 
@@ -9,18 +9,10 @@ const getBrands = async (request, response) => {
     db.pool_cars.query(queryCommand, (error, results) => {
         if (!results) {
             console.log(error)
-            response.json({
-                status: "error",
-                message: error.code,
-                data: null
-            })
+            responseCuccli(response, "error", error.code, null, null)
         } else {
             brands = results
-            response.json({
-                status: "success",
-                message: null,
-                data: results
-            })
+            responseCuccli(response, "success", null, null, results)
         }
     })
     // console.log("======= getBrands =======")
