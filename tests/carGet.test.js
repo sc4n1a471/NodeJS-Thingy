@@ -2,7 +2,7 @@ const supertest = require("supertest");
 const app = require("../app");
 
 describe('GET /cars',  () => {
-    it("valami", async () => {
+    it("", async () => {
         await supertest(app)
             .get('/cars')
             .expect(200)
@@ -13,7 +13,7 @@ describe('GET /cars',  () => {
 })
 
 describe('GET /cars/ZZZ111',  () => {
-    it("valami", async () => {
+    it("", async () => {
         await supertest(app)
             .get('/cars/ZZZ111')
             .expect(200)

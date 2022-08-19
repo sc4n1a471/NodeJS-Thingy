@@ -1,15 +1,15 @@
 const db = require('../database/database.js')
 
 const deleteData = async (request, response) => {
-    console.log("===========")
+    // console.log("===========")
 
     const table = "table1"
-    console.log("Table: ", table)
+    // console.log("Table: ", table)
 
     const license_plate = request.params.license_plate
 
     const queryCommand = `DELETE FROM ${table} WHERE license_plate = '${license_plate}';`
-    console.log(queryCommand)
+    // console.log(queryCommand)
 
     db.pool_cars.query(queryCommand, (error, results) => {
         if (error) {
@@ -27,7 +27,7 @@ const deleteData = async (request, response) => {
             })
         }
     })
-    console.log("===========")
+    // console.log("===========")
 }
 
 module.exports = {

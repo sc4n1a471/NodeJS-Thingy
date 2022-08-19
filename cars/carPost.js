@@ -3,8 +3,8 @@ const {Car} = require("./carModel.js");
 const carBrands = require("./carBrands");
 
 const createData = async (request, response) => {
-    console.log("===========")
-    console.log("request.body: ",request.body)
+    // console.log("===========")
+    // console.log("request.body: ",request.body)
 
     if (request.body.license_plate !== undefined) {
         const table = "table1"
@@ -42,8 +42,8 @@ const createData = async (request, response) => {
                 })
                 return
             } else {
-                carBrands.brands = await carBrands.queryBrands();
-                console.log("Brands after creating new one: ", carBrands.brands)
+                // carBrands.brands = await carBrands.queryBrands();
+                // console.log("Brands after creating new one: ", carBrands.brands)
                 for (let value of Object.values(carBrands.brands)) {
                     if (rb.brand === value.brand) {
                         brand_id = value.brand_id
@@ -60,7 +60,7 @@ const createData = async (request, response) => {
         }
         newData = new Car(rb.license_plate, brand_id, rb.model, rb.codename, rb.year, rb.comment, rb.is_new)
 
-        console.log("newData: " , newData)
+        // console.log("newData: " , newData)
 
         let command = `INSERT INTO ${table} VALUES (?, ?, ?, ?, ?, ?, ?)`;
 
@@ -87,7 +87,7 @@ const createData = async (request, response) => {
             data: null
         })
     }
-    console.log("===========")
+    // console.log("===========")
 }
 
 module.exports = {

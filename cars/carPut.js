@@ -5,32 +5,32 @@ const {Car} = require("./carModel");
 const carBrands = require("./carBrands");
 
 const checkData = async (license_plate, table) => {
-    console.log("====== checkData ======")
-    console.log("table passed to checkData: ", table)
+    // console.log("====== checkData ======")
+    // console.log("table passed to checkData: ", table)
     const queryCommand = `SELECT * FROM ${table} WHERE license_plate = '${license_plate}'`
 
     return new Promise((resolve, reject) => {
         db.pool_cars.query(queryCommand, (error, results) => {
             if (!results[0]) {
-                console.log(`No car with license plate ${license_plate}`)
+                // console.log(`No car with license plate ${license_plate}`)
                 reject(`No car with license plate ${license_plate}`)
             } else {
-                console.log(`Success: Car found with license plate '${license_plate}'`)
-                console.log("====== checkData ======")
+                // console.log(`Success: Car found with license plate '${license_plate}'`)
+                // console.log("====== checkData ======")
                 resolve(results[0])
             }
         })
     }).catch(function() {
-        console.log("reject")
-        console.log("====== checkData ======")
+        // console.log("reject")
+        // console.log("====== checkData ======")
         return "nope"
     })
 }
 const updateData = async (request, response) => {
-    console.log("=========== updateData ===========")
+    // console.log("=========== updateData ===========")
 
     const table = "table1"
-    console.log("Table I got: ", table)
+    // console.log("Table I got: ", table)
 
     const oldData = await checkData(request.params.license_plate, table)
 
@@ -42,12 +42,12 @@ const updateData = async (request, response) => {
         let rb = request.body
 
         if (table === 'table1') {
-            console.log("Applied schema is for: table1")
+            // console.log("Applied schema is for: table1")
 
             carBrands.brands = await carBrands.queryBrands();
             let brand_id = oldCar.brand_id
             if (rb.brand !== undefined) {
-                console.log("New brand is in body")
+                // console.log("New brand is in body")
                 for (let value of Object.values(carBrands.brands)) {
                     if (rb.brand === value.brand) {
                         brand_id = value.brand_id
@@ -74,11 +74,11 @@ const updateData = async (request, response) => {
             finalizedData.brand_id = brand_id
 
             command = cc.commandCreator(finalizedData)
-            console.log("Received command:", command)
+            // console.log("Received command:", command)
 
         }
 
-        console.log("newCar: ", finalizedData)
+        // console.log("newCar: ", finalizedData)
 
         db.pool_cars.query(command,(error, results) => {
             if (error) {
@@ -91,7 +91,7 @@ const updateData = async (request, response) => {
                     }
                 )
             } else {
-                console.log("Results: " + JSON.stringify(results))
+                // console.log("Results: " + JSON.stringify(results))
                 response.json(
                     {
                         status: "success",
@@ -110,7 +110,7 @@ const updateData = async (request, response) => {
             }
         )
     }
-    console.log("=========== updateData ===========")
+    // console.log("=========== updateData ===========")
 }
 
 module.exports = {
