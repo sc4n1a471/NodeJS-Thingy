@@ -15,7 +15,7 @@ const mc = require('./mc.js')
 app.use(express.json())
 
 app.listen(3000, "0.0.0.0", () => {
-    console.log("Listening for request");
+    console.log("Listening for request...");
 });
 
 app.get("/", async (req, res) => {
