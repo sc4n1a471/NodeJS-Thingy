@@ -3,6 +3,7 @@ const cc = require('../commandCreator.js')
 const carModel = require('./carModel.js')
 const {Car} = require("./carModel");
 const carBrands = require("./carBrands");
+const responseCuccli = require("../database/response")
 
 const checkData = async (license_plate, table) => {
     // console.log("====== checkData ======")
@@ -83,32 +84,14 @@ const updateData = async (request, response) => {
         db.pool_cars.query(command,(error, results) => {
             if (error) {
                 console.log(error)
-                response.json(
-                    {
-                        status: "error",
-                        message: error,
-                        data: null
-                    }
-                )
+                responseCuccli(response, "error", error, null, null)
             } else {
                 // console.log("Results: " + JSON.stringify(results))
-                response.json(
-                    {
-                        status: "success",
-                        message: null,
-                        data: finalizedData
-                    }
-                )
+                responseCuccli(response, "success", null, finalizedData, null)
             }
         })
     } else {
-        response.json(
-            {
-                status: "error",
-                message: "This data does not exist",
-                data: null
-            }
-        )
+        responseCuccli(response, "error", "This data does not exist", null, null)
     }
     // console.log("=========== updateData ===========")
 }

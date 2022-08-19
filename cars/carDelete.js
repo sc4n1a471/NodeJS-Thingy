@@ -1,4 +1,5 @@
 const db = require('../database/database.js')
+const responseCuccli = require("../database/response")
 
 const deleteData = async (request, response) => {
     // console.log("===========")
@@ -14,17 +15,9 @@ const deleteData = async (request, response) => {
     db.pool_cars.query(queryCommand, (error, results) => {
         if (error) {
             console.log(error)
-            response.json({
-                status: "error",
-                message: error,
-                data: null
-            })
+            responseCuccli(response, "error", error, null, null)
         } else {
-            response.json({
-                status: "success",
-                message: `Car deleted with license plate '${license_plate}'!'`,
-                data: null
-            })
+            responseCuccli(response, "success", `Car deleted with license plate '${license_plate}'!'`, null, null)
         }
     })
     // console.log("===========")

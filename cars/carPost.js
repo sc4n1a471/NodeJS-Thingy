@@ -1,4 +1,5 @@
 const db = require('../database/database.js')
+const responseCuccli = require("../database/response")
 const {Car} = require("./carModel.js");
 const carBrands = require("./carBrands");
 
@@ -67,25 +68,13 @@ const createData = async (request, response) => {
         db.pool_cars.query(command, Object.values(newData), (error) => {
             if (error) {
                 console.log(error)
-                response.json({
-                    status: "fail",
-                    message: error,
-                    data: null
-                })
+                responseCuccli(response, "error", error, null, null)
             } else {
-                response.json({
-                    status: "success",
-                    message: null,
-                    data: newData
-                })
+                responseCuccli(response, "success", null, newData, null)
             }
         })
     } else {
-        response.json({
-            status: "fail",
-            message: "http body does not exist",
-            data: null
-        })
+        responseCuccli(response, "error", "http body does not exist", null, null)
     }
     // console.log("===========")
 }

@@ -1,4 +1,5 @@
 const db = require('../database/database.js')
+const responseCuccli = require("../database/response")
 const table1 = "table1"
 const tableBrands = "brands"
 
@@ -27,17 +28,9 @@ const getData = async (request, response) => {
     db.pool_cars.query(queryCommand, (error, results) => {
         if (!results) {
             console.log(error)
-            response.json({
-                status: "error",
-                message: error.code,
-                data: null
-            })
+            responseCuccli(response, "error", error.code, null, null)
         } else {
-            response.json({
-                status: "success",
-                message: null,
-                data: results
-            })
+            responseCuccli(response, "success", null, results, null)
         }
     })
     // console.log("===========")
@@ -71,24 +64,12 @@ const getDataByID = async (request, response) => {
         if (results !== undefined) {
             if (!results[0]) {
                 console.log(error)
-                response.json({
-                    status: "error",
-                    message: error,
-                    data: null
-                })
+                responseCuccli(response, "error", error, null, null)
             } else {
-                response.json({
-                    status: "success",
-                    message: null,
-                    data: results
-                })
+                responseCuccli(response, "success", null, results, null)
             }
         } else {
-            response.json({
-                status: "error",
-                message: "results is undefined",
-                data: null
-            })
+            responseCuccli(response, "error", "results is undefined", null, null)
         }
     })
     // console.log("===========")
