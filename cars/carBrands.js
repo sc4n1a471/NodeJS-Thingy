@@ -1,8 +1,10 @@
 const db = require("../database/database");
+require('iconv-lite').encodingExists('foo')
 
 let brands = null
 
 const getBrands = async (request, response) => {
+    // console.log("======= getBrands =======")
     const queryCommand = "SELECT * FROM brands;"
     db.pool_cars.query(queryCommand, (error, results) => {
         if (!results) {
@@ -21,10 +23,11 @@ const getBrands = async (request, response) => {
             })
         }
     })
+    // console.log("======= getBrands =======")
 }
 
 const queryBrands = async () => {
-    console.log("====== queryBrands ======")
+    // console.log("====== queryBrands ======")
     const queryCommand = "SELECT * FROM brands;"
 
     return new Promise((resolve, reject) => {
@@ -33,8 +36,8 @@ const queryBrands = async () => {
                 console.log(error)
             } else {
                 resolve(results)
-                console.log("Result: ", results)
-                console.log("====== queryBrands ======")
+                // console.log("Result: ", results)
+                // console.log("====== queryBrands ======")
             }
         })
     }).catch(function() {
@@ -45,7 +48,7 @@ const queryBrands = async () => {
 }
 
 const createBrand = async (brand) => {
-    console.log("====== createBrand ======")
+    // console.log("====== createBrand ======")
     const queryCommand = `INSERT INTO brands (brand) VALUES ('${brand}')`;
     console.log(queryCommand)
 
@@ -56,7 +59,7 @@ const createBrand = async (brand) => {
                 console.log("====== createBrand ======")
                 return false;
             } else {
-                console.log("====== createBrand ======")
+                // console.log("====== createBrand ======")
                 resolve(true);
             }
         })

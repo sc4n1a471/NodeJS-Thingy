@@ -3,7 +3,7 @@ const table1 = "table1"
 const tableBrands = "brands"
 
 const getData = async (request, response) => {
-    console.log("===========")
+    // console.log("===========")
 
     const queryCommand = `
         SELECT 
@@ -22,7 +22,7 @@ const getData = async (request, response) => {
             ${table1}.brand_id = ${tableBrands}.brand_id
         ORDER BY 
             license_plate;`
-    console.log(queryCommand)
+    // console.log(queryCommand)
 
     db.pool_cars.query(queryCommand, (error, results) => {
         if (!results) {
@@ -40,11 +40,11 @@ const getData = async (request, response) => {
             })
         }
     })
-    console.log("===========")
+    // console.log("===========")
 }
 
 const getDataByID = async (request, response) => {
-    console.log("===========")
+    // console.log("===========")
 
     const queryCommand = `
         SELECT 
@@ -65,25 +65,33 @@ const getDataByID = async (request, response) => {
             ${table1}.license_plate = '${(request.params.license_plate)}'
         ORDER BY 
             license_plate;`
-    console.log(queryCommand)
+    // console.log(queryCommand)
 
     db.pool_cars.query(queryCommand, (error, results) => {
-        if (!results[0]) {
-            console.log(error)
-            response.json({
-                status: "error",
-                message: error,
-                data: null
-            })
+        if (results !== undefined) {
+            if (!results[0]) {
+                console.log(error)
+                response.json({
+                    status: "error",
+                    message: error,
+                    data: null
+                })
+            } else {
+                response.json({
+                    status: "success",
+                    message: null,
+                    data: results
+                })
+            }
         } else {
             response.json({
-                status: "success",
-                message: null,
-                data: results
+                status: "error",
+                message: "results is undefined",
+                data: null
             })
         }
     })
-    console.log("===========")
+    // console.log("===========")
 }
 
 module.exports = {
