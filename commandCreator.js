@@ -1,6 +1,6 @@
 const commandCreator = (data) => {
 
-    console.log("====== commandCreator start ======")
+    // console.log("====== commandCreator start ======")
 
     // nem igazán emlékszem, miért kell ez a hasIt...
     // ha minden false-ra van állítva, akkor tökéletesen műkszik úgy tűnik, sooo ki lehet szedni nagy eséllyel
@@ -67,10 +67,10 @@ const commandCreator = (data) => {
     //            year = (?)
     //            WHERE id = (?);`
 
-    console.log(set)
-    console.log(command)
-    console.log("where:", where)
-    console.log("====== commandCreator stop ======")
+    // console.log(set)
+    // console.log(command)
+    // console.log("where:", where)
+    // console.log("====== commandCreator stop ======")
 
     return command
 }

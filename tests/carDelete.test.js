@@ -1,10 +1,10 @@
 const supertest = require("supertest");
-const app = require("../app")
+const app = require("../app");
 
-describe('GET /carBrands',  () => {
+describe('DELETE /cars/ZZZ222',  () => {
     it("",async () => {
         await supertest(app)
-            .get('/carBrands')
+            .delete('/cars/ZZZ222')
             .expect(200)
             .then((response) => {
                 expect(response.body.status).toBe("success")
