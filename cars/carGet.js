@@ -9,6 +9,7 @@ const getData = async (request, response) => {
     const queryCommand = `
         SELECT 
             ${table1}.license_plate, 
+            ${table1}.brand_id,
             ${tableBrands}.brand, 
             ${table1}.model, 
             ${table1}.codename, 
@@ -42,6 +43,7 @@ const getDataByID = async (request, response) => {
     const queryCommand = `
         SELECT 
             ${table1}.license_plate, 
+            ${table1}.brand_id,
             ${tableBrands}.brand, 
             ${table1}.model, 
             ${table1}.codename, 
