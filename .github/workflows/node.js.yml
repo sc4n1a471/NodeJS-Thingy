@@ -8,10 +8,10 @@ on:
     branches: [ "master" ]
     
 env:
-  DB_HOST: ${{ DB_HOST }}
-  DB_USER: ${{ DB_USER }}
-  DB_PASSWD: ${{ DB_PASSWD }}
-  DB_NAME: ${{ DB_NAME }}
+  DB_HOST: ${{ secrets.DB_HOST }}
+  DB_USER: ${{ secrets.DB_USER }}
+  DB_PASSWD: ${{ secrets.DB_PASSWD }}
+  DB_NAME: ${{ secrets.DB_NAME }}
 
 jobs:
   build:
