@@ -25,10 +25,12 @@ app.get("/mc", mc.mc_query);
 // app.delete("/test/:id", test_delete.deleteData)
 
 app.get("/cars", carGet.getData);
-app.get("/carBrands", carBrands.getBrands);
 app.get("/cars/:license_plate", carGet.getDataByID)
 app.post("/cars", carPost.createData)
 app.put("/cars/:license_plate", carPut.updateData)
 app.delete("/cars/:license_plate", carDelete.deleteData)
+
+app.get("/carBrands", carBrands.getBrands);
+// app.get("/carBrands/:brand", carBrands.getBrandById);
 
 module.exports = app;

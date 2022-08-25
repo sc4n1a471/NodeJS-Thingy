@@ -1,6 +1,6 @@
 const supertest = require("supertest");
-const app = require("../app");
-const {Car} = require("../cars/carModel");
+const app = require("../../app");
+const {Car} = require("../../cars/carModel");
 describe('POST /cars/',  () => {
     it("",async () => {
         // const testCar = Car("ZZZ222")

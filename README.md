@@ -1,5 +1,6 @@
 # NodeJS-Thingy
 [![Build, Publish, Redeploy](https://github.com/sc4n1a471/NodeJS-Thingy/actions/workflows/docker.yml/badge.svg)](https://github.com/sc4n1a471/NodeJS-Thingy/actions/workflows/docker.yml)
+[![API Test](https://github.com/sc4n1a471/NodeJS-Thingy/actions/workflows/node.js.yml/badge.svg?branch=master&event=pull_request)](https://github.com/sc4n1a471/NodeJS-Thingy/actions/workflows/node.js.yml)
 
 Ez lenni repository for NodeJS-Thingy
 

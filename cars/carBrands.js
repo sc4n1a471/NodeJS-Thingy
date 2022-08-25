@@ -18,6 +18,20 @@ const getBrands = async (request, response) => {
     // console.log("======= getBrands =======")
 }
 
+// const getBrandById = async (request, response) => {
+//     // console.log("======= getBrands =======")
+//     const queryCommand = `SELECT * FROM brands WHERE brand = '${request.params.brand}';`
+//     db.pool_cars.query(queryCommand, (error, results) => {
+//         if (!results) {
+//             console.log(error)
+//             responseCuccli(response, "error", error.code, null, null)
+//         } else {
+//             responseCuccli(response, "success", null, null, results)
+//         }
+//     })
+//     // console.log("======= getBrands =======")
+// }
+
 const queryBrands = async () => {
     // console.log("====== queryBrands ======")
     const queryCommand = "SELECT * FROM brands;"
@@ -65,6 +79,7 @@ const createBrand = async (brand) => {
 module.exports = {
     brands,
     getBrands,
+    // getBrandById,
     queryBrands,
     createBrand
 }
