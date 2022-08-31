@@ -11,15 +11,3 @@ describe('GET /cars',  () => {
             })
     })
 })
-
-describe('GET /cars/ZZZ111',  () => {
-    it("", async () => {
-        await supertest(app)
-            .get('/cars/ZZZ111')
-            .expect(200)
-            .then((response) => {
-                // console.log(response)
-                expect(response.body.status).toBe("success")
-            })
-    })
-})

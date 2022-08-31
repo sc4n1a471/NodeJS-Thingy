@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@jest/test-sequencer": "^29.0.1",
     "express": "^4.17.2",
     "iconv-lite": "^0.6.3",
     "minecraft-server-util": "^5.2.8",
@@ -12,5 +13,8 @@
   },
   "scripts": {
     "test": "jest --forceExit --runInBand"
+  },
+  "jest": {
+    "testSequencer": "./tests/Integration Tests/custom-sequencer.js"
   }
 }
