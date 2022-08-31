@@ -24,7 +24,7 @@ const checkData = async (license_plate, table) => {
     }).catch(function() {
         // console.log("reject")
         // console.log("====== checkData ======")
-        return "nope"
+        return "No car was found with this license plate"
     })
 }
 const updateData = async (request, response) => {
@@ -34,13 +34,17 @@ const updateData = async (request, response) => {
     // console.log("Table I got: ", table)
 
     const oldData = await checkData(request.params.license_plate, table)
+    // console.log(oldData)
 
-    if (oldData !== "nope") {
+    if (oldData !== "No car was found with this license plate") {
         let oldCar = new Car(oldData.license_plate, oldData.brand_id, oldData.model, oldData.codename, oldData.year, oldData.comment, oldData.is_new, oldData.brand)
 
         let finalizedData
         let command
         let rb = request.body
+        let rp = request.params
+        // console.log("request params:", rp)
+        // console.log("request body:", rb)
 
         if (table === 'table1') {
             // console.log("Applied schema is for: table1")
@@ -57,23 +61,39 @@ const updateData = async (request, response) => {
                 }
             }
 
-            finalizedData = new carModel.Car(
-                request.params.license_plate
-            )
+            // If license_plate is in the body, that means the request wants to update the license_plate
+            if (rb.license_plate === undefined) {
+                finalizedData = new carModel.Car(
+                    rp.license_plate
+                )
+            } else {
+                finalizedData = new carModel.Car(
+                    rp.license_plate
+                )
+                // console.log(finalizedData)
+                // console.log("New license plate:", rb.license_plate)
+                finalizedData.new_license_plate = rb.license_plate
+                // console.log(finalizedData)
+            }
 
+            // console.log("oldCar:", oldCar)
+            // console.log("rb:", rb)
             for (let [key, value] of Object.entries(oldCar)) {
                 for (let [newKey, newValue] of Object.entries(rb)) {
-                    if (key === newKey) {
-                        finalizedData[key] = newValue;
-                        break;
-                    } else {
-                        finalizedData[key] = value;
+                    if (key !== 'license_plate' && key !== '_new_license_plate') {
+                        if (key === newKey) {
+                            finalizedData[key] = newValue;
+                            break;
+                        } else {
+                            finalizedData[key] = value;
+                        }
                     }
                 }
             }
 
             finalizedData.brand_id = brand_id
 
+            // console.log(finalizedData)
             command = cc.commandCreator(finalizedData)
             // console.log("Received command:", command)
 
@@ -82,15 +102,20 @@ const updateData = async (request, response) => {
         // console.log("newCar: ", finalizedData)
 
         db.pool_cars.query(command,(error, results) => {
+            // console.log(results)
             if (error) {
                 console.log(error)
                 responseCuccli(response, "error", error, null, null)
+            } else if (results.affectedRows === 0) {
+                console.error("No rows were affected")
+                responseCuccli(response, "error", "No rows were affected", null, null)
             } else {
                 // console.log("Results: " + JSON.stringify(results))
-                responseCuccli(response, "success", null, finalizedData, null)
+                responseCuccli(response, "success", 'Car was updated successfully', null, null)
             }
         })
     } else {
+        // console.error("This data does not exist")
         responseCuccli(response, "error", "This data does not exist", null, null)
     }
     // console.log("=========== updateData ===========")
