@@ -2,7 +2,7 @@
 [![Build, Publish, Redeploy](https://github.com/sc4n1a471/NodeJS-Thingy/actions/workflows/docker.yml/badge.svg)](https://github.com/sc4n1a471/NodeJS-Thingy/actions/workflows/docker.yml)
 [![API Test](https://github.com/sc4n1a471/NodeJS-Thingy/actions/workflows/node.js.yml/badge.svg?branch=dev)](https://github.com/sc4n1a471/NodeJS-Thingy/actions/workflows/node.js.yml)
 
-Ez lenni repository for NodeJS-Thingy
+Ez lenni repository for REST API szerű NodeJS-Thingy cuccli
 
 |           | GET        | GET_ID               | POST  | PUT                  | DELETE               |
 |-----------|------------|----------------------|-------|----------------------|----------------------|
