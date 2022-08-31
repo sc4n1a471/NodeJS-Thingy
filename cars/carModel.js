@@ -15,10 +15,19 @@ class Car {
         this.comment = comment;
         this.is_new = is_new;
         this.brand = brand;
+        this._new_license_plate = license_plate;
     }
 
     info() {
         return [this.license_plate, this.brand, this.model, this.codename, this.year, this.comment, this.is_new]
+    }
+
+    get new_license_plate() {
+        return this._new_license_plate
+    }
+
+    set new_license_plate(newLicensePlate) {
+        this._new_license_plate = newLicensePlate
     }
 }
 

@@ -2,9 +2,8 @@ const commandCreator = (data) => {
 
     // console.log("====== commandCreator start ======")
 
-    // nem igazán emlékszem, miért kell ez a hasIt...
-    // ha minden false-ra van állítva, akkor tökéletesen műkszik úgy tűnik, sooo ki lehet szedni nagy eséllyel
     let hasIt = {
+        new_license_plate: false,
         brand: false,
         brand_id: false,
         model: false,
@@ -20,6 +19,13 @@ const commandCreator = (data) => {
     let command = `UPDATE table1`
 
     let notHas = []
+
+    if (hasIt.new_license_plate) {
+        where += ` AND license_plate = '${data.license_plate}'`
+    } else {
+        // console.log("commandCreator data:", data)
+        notHas.push(`license_plate = '${data._new_license_plate}'`)
+    }
 
     if (hasIt.brand_id) {
         where += ` AND brand_id = '${data.brand_id}'`
