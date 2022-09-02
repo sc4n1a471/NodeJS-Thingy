@@ -3,6 +3,12 @@ const responseCuccli = require("../database/response")
 const table1 = "table1"
 const tableBrands = "brands"
 
+/*
+ * Returns all cars as HTTP response
+ * Can return 2 responses
+ * - error - error.code
+ * - success - There you go
+ */
 const getData = async (request, response) => {
     // console.log("===========")
 
@@ -37,6 +43,13 @@ const getData = async (request, response) => {
     // console.log("===========")
 }
 
+/*
+ * Returns car with given license plate as HTTP response
+ * Can return 3 responses
+ * - error - This car does not exist
+ * - error - results is undefined
+ * - success - There you go
+ */
 const getDataByID = async (request, response) => {
     // console.log("===========")
 
@@ -60,7 +73,7 @@ const getDataByID = async (request, response) => {
             ${table1}.license_plate = '${(request.params.license_plate)}'
         ORDER BY 
             license_plate;`
-    console.log(queryCommand)
+    // console.log(queryCommand)
 
     db.pool_cars.query(queryCommand, (error, results) => {
         if (results !== undefined) {

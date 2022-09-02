@@ -1,6 +1,12 @@
 const db = require('../database/database.js')
 const responseCuccli = require("../database/response")
 
+/*
+ * Deletes car with given license plate
+ * Can return 2 responses
+ * - error - error
+ * - success - Car deleted with license plate '${license_plate}'!
+ */
 const deleteData = async (request, response) => {
     // console.log("===========")
 
