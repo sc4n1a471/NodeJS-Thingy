@@ -3,10 +3,19 @@ const responseCuccli = require("../database/response")
 const {Car} = require("./carModel.js");
 const carBrands = require("./carBrands");
 
+/*
+ * Creates car
+ * Can return 4 responses
+ * - error - Could not create new brand
+ * - error - Error of database connection
+ * - error - http body does not exist
+ * - success - null
+ */
 const createData = async (request, response) => {
     // console.log("===========")
     // console.log("request.body: ",request.body)
 
+    // license plate in request body is important
     if (request.body.license_plate !== undefined) {
         const table = "table1"
         const tableBrand = "brands"
@@ -19,6 +28,9 @@ const createData = async (request, response) => {
         let brand_id
         let newBrand = true
 
+        /*
+         * if brand is in request body => can be new brand
+         */
         if (rb.brand !== undefined) {
             for (let value of Object.values(carBrands.brands)) {
                 if (rb.brand === value.brand) {
@@ -26,6 +38,7 @@ const createData = async (request, response) => {
                     newBrand = false
                     break;
                 }
+                // new brand
             }
         } else {
             newBrand = false
@@ -37,7 +50,7 @@ const createData = async (request, response) => {
             if (!successfullyCreatedBrand) {
                 console.log("Failed to create new brand")
                 response.json({
-                    status: "fail",
+                    status: "error",
                     message: "Could not create new brand",
                     data: null
                 })
@@ -45,6 +58,8 @@ const createData = async (request, response) => {
             } else {
                 // carBrands.brands = await carBrands.queryBrands();
                 // console.log("Brands after creating new one: ", carBrands.brands)
+
+                // TODO: Figure out where it gets the ID of the new brand
                 for (let value of Object.values(carBrands.brands)) {
                     if (rb.brand === value.brand) {
                         brand_id = value.brand_id
@@ -54,6 +69,9 @@ const createData = async (request, response) => {
             }
         }
 
+        /*
+         * Give every value a DEFAULT_VALUE if they are null/""
+         */
         for (let key of Object.keys(rb)) {
             if (rb[key] === "" || rb[key] === null) {
                 rb[key] = "DEFAULT_VALUE"

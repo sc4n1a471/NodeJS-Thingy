@@ -3,6 +3,12 @@ const responseCuccli = require("../database/response")
 
 let brands = null
 
+/*
+ * Returns brands (brand_id, brand) as HTTP response
+ * Can return 2 responses
+ * - error - error.code
+ * - success - null
+ */
 const getBrands = async (request, response) => {
     // console.log("======= getBrands =======")
     const queryCommand = "SELECT * FROM brands;"
@@ -32,6 +38,12 @@ const getBrands = async (request, response) => {
 //     // console.log("======= getBrands =======")
 // }
 
+/*
+ * Returns brands (brand_id, brand) as object
+ * Can return 2 responses
+ * - error - "nope"
+ * - success - object of brands(results)
+ */
 const queryBrands = async () => {
     // console.log("====== queryBrands ======")
     const queryCommand = "SELECT * FROM brands;"
@@ -48,11 +60,18 @@ const queryBrands = async () => {
         })
     }).catch(function() {
         console.log("reject")
-        console.log("====== queryBrands ======")
+        // console.log("====== queryBrands ======")
         return "nope"
     })
 }
 
+/*
+ * Creates new brand
+ * Can return 2 responses
+ * - error - false
+ * - catch - false
+ * - success - true
+ */
 const createBrand = async (brand) => {
     // console.log("====== createBrand ======")
     const queryCommand = `INSERT INTO brands (brand) VALUES ('${brand}')`;

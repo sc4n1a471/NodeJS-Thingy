@@ -5,6 +5,13 @@ const {Car} = require("./carModel");
 const carBrands = require("./carBrands");
 const responseCuccli = require("../database/response")
 
+/*
+ * Returns the updatable car as object
+ * Can return 3 responses
+ * - No car with license plate ${license_plate}
+ * - No car was found with this license plate
+ * - Array of car object
+ */
 const checkData = async (license_plate, table) => {
     // console.log("====== checkData ======")
     // console.log("table passed to checkData: ", table)
@@ -27,6 +34,14 @@ const checkData = async (license_plate, table) => {
         return "No car was found with this license plate"
     })
 }
+
+/*
+ * Updates car with new data
+ * Can return 3 responses
+ * - error - This data does not exist
+ * - error - No rows were affected
+ * - success - Car was updated successfully
+ */
 const updateData = async (request, response) => {
     // console.log("=========== updateData ===========")
 
@@ -78,6 +93,11 @@ const updateData = async (request, response) => {
 
             // console.log("oldCar:", oldCar)
             // console.log("rb:", rb)
+
+            /*
+             * merges oldCar's and newCar's data into finalizedData
+             * if attribute is given in newCar, that means it's a data to be updated
+             */
             for (let [key, value] of Object.entries(oldCar)) {
                 for (let [newKey, newValue] of Object.entries(rb)) {
                     if (key !== 'license_plate' && key !== '_new_license_plate') {
