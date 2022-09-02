@@ -35,9 +35,9 @@ const getData = async (request, response) => {
     db.pool_cars.query(queryCommand, (error, results) => {
         if (!results) {
             console.log("error:", error)
-            responseCuccli(response, "error", error.code, null, null)
+            responseCuccli(response, false, error.code, null, null)
         } else {
-            responseCuccli(response, "success", "There you go", results, null)
+            responseCuccli(response, true, "There you go", results, null)
         }
     })
     // console.log("===========")
@@ -81,12 +81,12 @@ const getDataByID = async (request, response) => {
             // console.log(results[0] === undefined)
             if (results[0] === undefined) {
                 console.log("error:", "This car does not exist")
-                responseCuccli(response, "error", "This car does not exist", null, null)
+                responseCuccli(response, false, "This car does not exist", null, null)
             } else {
-                responseCuccli(response, "success", "There you go", results, null)
+                responseCuccli(response, true, "There you go", results, null)
             }
         } else {
-            responseCuccli(response, "error", "results is undefined", null, null)
+            responseCuccli(response, false, "results is undefined", null, null)
         }
     })
     // console.log("===========")

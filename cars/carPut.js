@@ -125,18 +125,18 @@ const updateData = async (request, response) => {
             // console.log(results)
             if (error) {
                 console.log(error)
-                responseCuccli(response, "error", error, null, null)
+                responseCuccli(response, false, error, null, null)
             } else if (results.affectedRows === 0) {
                 console.error("No rows were affected")
-                responseCuccli(response, "error", "No rows were affected", null, null)
+                responseCuccli(response, false, "No rows were affected", null, null)
             } else {
                 // console.log("Results: " + JSON.stringify(results))
-                responseCuccli(response, "success", 'Car was updated successfully', null, null)
+                responseCuccli(response, true, 'Car was updated successfully', null, null)
             }
         })
     } else {
         // console.error("This data does not exist")
-        responseCuccli(response, "error", "This data does not exist", null, null)
+        responseCuccli(response, false, "This data does not exist", null, null)
     }
     // console.log("=========== updateData ===========")
 }
