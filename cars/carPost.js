@@ -49,11 +49,7 @@ const createData = async (request, response) => {
             let successfullyCreatedBrand = await carBrands.createBrand(rb.brand)
             if (!successfullyCreatedBrand) {
                 console.log("Failed to create new brand")
-                response.json({
-                    status: "error",
-                    message: "Could not create new brand",
-                    data: null
-                })
+                responseCuccli(response, false, "Could not create new brand", null, null)
                 return
             } else {
                 // carBrands.brands = await carBrands.queryBrands();
@@ -86,13 +82,13 @@ const createData = async (request, response) => {
         db.pool_cars.query(command, Object.values(newData), (error) => {
             if (error) {
                 console.log(error)
-                responseCuccli(response, "error", error, null, null)
+                responseCuccli(response, false, error, null, null)
             } else {
-                responseCuccli(response, "success", null, newData, null)
+                responseCuccli(response, true, null, newData, null)
             }
         })
     } else {
-        responseCuccli(response, "error", "http body does not exist", null, null)
+        responseCuccli(response, false, "License plate is not in HTTP request body", null, null)
     }
     // console.log("===========")
 }

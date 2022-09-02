@@ -8,7 +8,7 @@ describe('PUT /cars/ZZZ222',  () => {
             .expect(200)
             .send({comment: 'testing'})
             .then((response) => {
-                expect(response.body.status).toBe("success")
+                expect(response.body.success).toBe(true)
             })
     })
 })

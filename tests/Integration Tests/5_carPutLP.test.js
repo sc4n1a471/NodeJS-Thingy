@@ -17,7 +17,7 @@ describe('PUT /cars/ZZZ222',  () => {
                 brand_id: 1
             })
             .then((response) => {
-                expect(response.body.status).toBe("success")
+                expect(response.body.success).toBe(true)
             })
     })
 })

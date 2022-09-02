@@ -7,7 +7,7 @@ describe('GET /carBrands',  () => {
             .get('/carBrands')
             .expect(200)
             .then((response) => {
-                expect(response.body.status).toBe("success")
+                expect(response.body.success).toBe(true)
             })
     })
 })

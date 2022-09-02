@@ -15,10 +15,10 @@ const getBrands = async (request, response) => {
     db.pool_cars.query(queryCommand, (error, results) => {
         if (!results) {
             console.log(error)
-            responseCuccli(response, "error", error.code, null, null)
+            responseCuccli(response, false, error.code, null, null)
         } else {
             brands = results
-            responseCuccli(response, "success", null, null, results)
+            responseCuccli(response, true, null, null, results)
         }
     })
     // console.log("======= getBrands =======")

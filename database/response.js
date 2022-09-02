@@ -1,6 +1,6 @@
-const responseCuccli = (response, status, message, cars, brands) => {
+const responseCuccli = (response, success, message, cars, brands) => {
     response.json({
-        status: status,
+        success: success,
         message: message,
         cars: cars,
         brands: brands

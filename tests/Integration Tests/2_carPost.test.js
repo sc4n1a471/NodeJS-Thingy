@@ -8,7 +8,7 @@ describe('POST /cars/{ZZZ222}',  () => {
             .expect(200)
             .send({license_plate: 'ZZZ222'})
             .then((response) => {
-                expect(response.body.status).toBe("success")
+                expect(response.body.success).toBe(true)
             })
     })
 })
