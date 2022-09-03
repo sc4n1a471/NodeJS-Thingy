@@ -25,12 +25,9 @@ const createData = async (request, response) => {
 
         carBrands.brands = await carBrands.queryBrands();
 
-        let brand_id
+        let brand_id = 0
         let newBrand = true
 
-        /*
-         * if brand is in request body => can be new brand
-         */
         if (rb.brand !== undefined) {
             for (let value of Object.values(carBrands.brands)) {
                 if (rb.brand === value.brand) {
@@ -38,32 +35,39 @@ const createData = async (request, response) => {
                     newBrand = false
                     break;
                 }
-                // new brand
+            }
+
+            // if the brand is new
+            if (brand_id === 0) {
+                let successfullyUploadedNewBrand = await carBrands.createBrand(rb.brand)
+                if (successfullyUploadedNewBrand[0]) {
+                    brand_id = successfullyUploadedNewBrand[1]
+                } else {
+                    console.log("Failed to create new brand")
+                    responseCuccli(response, false, "Could not create new brand", null, null)
+                    return
+                }
             }
         } else {
             newBrand = false
             brand_id = 1
         }
 
-        if (newBrand) {
-            let successfullyCreatedBrand = await carBrands.createBrand(rb.brand)
-            if (!successfullyCreatedBrand) {
-                console.log("Failed to create new brand")
-                responseCuccli(response, false, "Could not create new brand", null, null)
-                return
-            } else {
-                // carBrands.brands = await carBrands.queryBrands();
-                // console.log("Brands after creating new one: ", carBrands.brands)
-
-                // TODO: Figure out where it gets the ID of the new brand
-                for (let value of Object.values(carBrands.brands)) {
-                    if (rb.brand === value.brand) {
-                        brand_id = value.brand_id
-                        break;
-                    }
-                }
-            }
-        }
+        // if (newBrand) {
+        //     let successfullyCreatedBrand = await carBrands.createBrand(rb.brand)
+        //     if (!successfullyCreatedBrand[0]) {
+        //         console.log("Failed to create new brand")
+        //         responseCuccli(response, false, "Could not create new brand", null, null)
+        //         return
+        //     } else {
+        //         for (let value of Object.values(carBrands.brands)) {
+        //             if (rb.brand === value.brand) {
+        //                 brand_id = value.brand_id
+        //                 break;
+        //             }
+        //         }
+        //     }
+        // }
 
         /*
          * Give every value a DEFAULT_VALUE if they are null/""
@@ -90,7 +94,6 @@ const createData = async (request, response) => {
     } else {
         responseCuccli(response, false, "License plate is not in HTTP request body", null, null)
     }
-    // console.log("===========")
 }
 
 module.exports = {

@@ -32,5 +32,7 @@ app.delete("/cars/:license_plate", carDelete.deleteData)
 
 app.get("/carBrands", carBrands.getBrands);
 // app.get("/carBrands/:brand", carBrands.getBrandById);
+app.post("/carBrandsTest", carBrands.createBrandTest)
+app.delete("/carBrands/:brand_id", carBrands.deleteBrand);
 
 module.exports = app;

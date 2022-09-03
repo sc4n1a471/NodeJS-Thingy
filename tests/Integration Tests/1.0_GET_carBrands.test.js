@@ -1,12 +1,14 @@
 const supertest = require("supertest");
-const app = require("../../app");
+const app = require("../../app")
 
-describe('PUT /cars/ZZZ222',  () => {
+/*
+ * Queries car brands
+ */
+describe('GET /carBrands',  () => {
     it("",async () => {
         await supertest(app)
-            .put('/cars/ZZZ222')
+            .get('/carBrands')
             .expect(200)
-            .send({comment: 'testing'})
             .then((response) => {
                 expect(response.body.success).toBe(true)
             })

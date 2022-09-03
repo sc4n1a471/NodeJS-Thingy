@@ -6,6 +6,9 @@ describe('DELETE /cars/ZZZ223',  () => {
         await supertest(app)
             .delete('/cars/ZZZ222')
             .expect(200)
+        await supertest(app)
+            .delete('/cars/ZZZ111')
+            .expect(200)
             // .then((response) => {
             //     expect(response.body.status).toBe("success")
             // })
