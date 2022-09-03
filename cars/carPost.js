@@ -3,10 +3,19 @@ const responseCuccli = require("../database/response")
 const {Car} = require("./carModel.js");
 const carBrands = require("./carBrands");
 
+/*
+ * Creates car
+ * Can return 4 responses
+ * - error - Could not create new brand
+ * - error - Error of database connection
+ * - error - http body does not exist
+ * - success - null
+ */
 const createData = async (request, response) => {
     // console.log("===========")
     // console.log("request.body: ",request.body)
 
+    // license plate in request body is important
     if (request.body.license_plate !== undefined) {
         const table = "table1"
         const tableBrand = "brands"
@@ -16,7 +25,7 @@ const createData = async (request, response) => {
 
         carBrands.brands = await carBrands.queryBrands();
 
-        let brand_id
+        let brand_id = 0
         let newBrand = true
 
         if (rb.brand !== undefined) {
@@ -27,33 +36,42 @@ const createData = async (request, response) => {
                     break;
                 }
             }
+
+            // if the brand is new
+            if (brand_id === 0) {
+                let successfullyUploadedNewBrand = await carBrands.createBrand(rb.brand)
+                if (successfullyUploadedNewBrand[0]) {
+                    brand_id = successfullyUploadedNewBrand[1]
+                } else {
+                    console.log("Failed to create new brand")
+                    responseCuccli(response, false, "Could not create new brand", null, null)
+                    return
+                }
+            }
         } else {
             newBrand = false
             brand_id = 1
         }
 
-        if (newBrand) {
-            let successfullyCreatedBrand = await carBrands.createBrand(rb.brand)
-            if (!successfullyCreatedBrand) {
-                console.log("Failed to create new brand")
-                response.json({
-                    status: "fail",
-                    message: "Could not create new brand",
-                    data: null
-                })
-                return
-            } else {
-                // carBrands.brands = await carBrands.queryBrands();
-                // console.log("Brands after creating new one: ", carBrands.brands)
-                for (let value of Object.values(carBrands.brands)) {
-                    if (rb.brand === value.brand) {
-                        brand_id = value.brand_id
-                        break;
-                    }
-                }
-            }
-        }
+        // if (newBrand) {
+        //     let successfullyCreatedBrand = await carBrands.createBrand(rb.brand)
+        //     if (!successfullyCreatedBrand[0]) {
+        //         console.log("Failed to create new brand")
+        //         responseCuccli(response, false, "Could not create new brand", null, null)
+        //         return
+        //     } else {
+        //         for (let value of Object.values(carBrands.brands)) {
+        //             if (rb.brand === value.brand) {
+        //                 brand_id = value.brand_id
+        //                 break;
+        //             }
+        //         }
+        //     }
+        // }
 
+        /*
+         * Give every value a DEFAULT_VALUE if they are null/""
+         */
         for (let key of Object.keys(rb)) {
             if (rb[key] === "" || rb[key] === null) {
                 rb[key] = "DEFAULT_VALUE"
@@ -68,15 +86,14 @@ const createData = async (request, response) => {
         db.pool_cars.query(command, Object.values(newData), (error) => {
             if (error) {
                 console.log(error)
-                responseCuccli(response, "error", error, null, null)
+                responseCuccli(response, false, error, null, null)
             } else {
-                responseCuccli(response, "success", null, newData, null)
+                responseCuccli(response, true, null, newData, null)
             }
         })
     } else {
-        responseCuccli(response, "error", "http body does not exist", null, null)
+        responseCuccli(response, false, "License plate is not in HTTP request body", null, null)
     }
-    // console.log("===========")
 }
 
 module.exports = {

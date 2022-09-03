@@ -5,7 +5,9 @@ name: API Test
 
 on:
   pull_request:
-    branches: [ "master" ]
+    branches:
+    - master
+    - dev
     
 env:
   DB_HOST: ${{ secrets.DB_HOST }}
