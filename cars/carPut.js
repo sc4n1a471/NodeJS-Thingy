@@ -68,6 +68,10 @@ const updateData = async (request, response) => {
                     let successfullyUploadedNewBrand = await carBrands.createBrand(rb.brand)
                     if (successfullyUploadedNewBrand[0]) {
                         brand_id = successfullyUploadedNewBrand[1]
+                    } else {
+                        console.log("Failed to create new brand")
+                        responseCuccli(response, false, "Could not create new brand", null, null)
+                        return
                     }
                 }
             }
