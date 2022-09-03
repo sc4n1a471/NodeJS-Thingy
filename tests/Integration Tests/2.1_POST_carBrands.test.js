@@ -2,6 +2,9 @@ const supertest = require("supertest");
 const app = require("../../app");
 let insertId = 0;
 
+/*
+ * Uploads a new car brand with name "TestBrand" and then deletes it with its new brand_id (insertId)
+ */
 describe('POST /carBrandsTest/{TestBrand}',  () => {
     it("",async () => {
         await supertest(app)

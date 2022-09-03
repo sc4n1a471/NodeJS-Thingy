@@ -13,24 +13,17 @@ const responseCuccli = require("../database/response")
  * - Array of car object
  */
 const checkData = async (license_plate, table) => {
-    // console.log("====== checkData ======")
-    // console.log("table passed to checkData: ", table)
     const queryCommand = `SELECT * FROM ${table} WHERE license_plate = '${license_plate}'`
 
     return new Promise((resolve, reject) => {
         db.pool_cars.query(queryCommand, (error, results) => {
             if (!results[0]) {
-                // console.log(`No car with license plate ${license_plate}`)
                 reject(`No car with license plate ${license_plate}`)
             } else {
-                // console.log(`Success: Car found with license plate '${license_plate}'`)
-                // console.log("====== checkData ======")
                 resolve(results[0])
             }
         })
     }).catch(function() {
-        // console.log("reject")
-        // console.log("====== checkData ======")
         return "No car was found with this license plate"
     })
 }
@@ -43,13 +36,10 @@ const checkData = async (license_plate, table) => {
  * - success - Car was updated successfully
  */
 const updateData = async (request, response) => {
-    // console.log("=========== updateData ===========")
 
     const table = "table1"
-    // console.log("Table I got: ", table)
 
     const oldData = await checkData(request.params.license_plate, table)
-    // console.log(oldData)
 
     if (oldData !== "No car was found with this license plate") {
         let oldCar = new Car(oldData.license_plate, oldData.brand_id, oldData.model, oldData.codename, oldData.year, oldData.comment, oldData.is_new, oldData.brand)
@@ -58,20 +48,26 @@ const updateData = async (request, response) => {
         let command
         let rb = request.body
         let rp = request.params
-        // console.log("request params:", rp)
-        // console.log("request body:", rb)
 
         if (table === 'table1') {
-            // console.log("Applied schema is for: table1")
 
             carBrands.brands = await carBrands.queryBrands();
-            let brand_id = oldCar.brand_id
+            let brand_id = 0
+
+            // get brand_id if it is a known brand
             if (rb.brand !== undefined) {
-                // console.log("New brand is in body")
                 for (let value of Object.values(carBrands.brands)) {
                     if (rb.brand === value.brand) {
                         brand_id = value.brand_id
                         break;
+                    }
+                }
+
+                // if the brand is new
+                if (brand_id === 0) {
+                    let successfullyUploadedNewBrand = await carBrands.createBrand(rb.brand)
+                    if (successfullyUploadedNewBrand[0]) {
+                        brand_id = successfullyUploadedNewBrand[1]
                     }
                 }
             }
@@ -82,17 +78,9 @@ const updateData = async (request, response) => {
                     rp.license_plate
                 )
             } else {
-                finalizedData = new carModel.Car(
-                    rp.license_plate
-                )
-                // console.log(finalizedData)
-                // console.log("New license plate:", rb.license_plate)
+                finalizedData = new carModel.Car(rp.license_plate)
                 finalizedData.new_license_plate = rb.license_plate
-                // console.log(finalizedData)
             }
-
-            // console.log("oldCar:", oldCar)
-            // console.log("rb:", rb)
 
             /*
              * merges oldCar's and newCar's data into finalizedData
@@ -100,7 +88,7 @@ const updateData = async (request, response) => {
              */
             for (let [key, value] of Object.entries(oldCar)) {
                 for (let [newKey, newValue] of Object.entries(rb)) {
-                    if (key !== 'license_plate' && key !== '_new_license_plate') {
+                    if (key !== 'license_plate' && key !== '_new_license_plate' && key !== 'brand_id') {
                         if (key === newKey) {
                             finalizedData[key] = newValue;
                             break;
@@ -112,6 +100,7 @@ const updateData = async (request, response) => {
             }
 
             finalizedData.brand_id = brand_id
+            // finalizedData.brand = rb.brand
 
             // console.log(finalizedData)
             command = cc.commandCreator(finalizedData)
@@ -119,26 +108,22 @@ const updateData = async (request, response) => {
 
         }
 
-        // console.log("newCar: ", finalizedData)
 
         db.pool_cars.query(command,(error, results) => {
-            // console.log(results)
             if (error) {
                 console.log(error)
                 responseCuccli(response, false, error, null, null)
             } else if (results.affectedRows === 0) {
                 console.error("No rows were affected")
-                responseCuccli(response, false, "No rows were affected", null, null)
+                responseCuccli(response, false, "No rows were affected", finalizedData, null)
             } else {
                 // console.log("Results: " + JSON.stringify(results))
-                responseCuccli(response, true, 'Car was updated successfully', null, null)
+                responseCuccli(response, true, 'Car was updated successfully', finalizedData, null)
             }
         })
     } else {
-        // console.error("This data does not exist")
         responseCuccli(response, false, "This data does not exist", null, null)
     }
-    // console.log("=========== updateData ===========")
 }
 
 module.exports = {

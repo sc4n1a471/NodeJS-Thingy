@@ -10,7 +10,6 @@ const tableBrands = "brands"
  * - success - There you go
  */
 const getData = async (request, response) => {
-    // console.log("===========")
 
     const queryCommand = `
         SELECT 
@@ -30,7 +29,6 @@ const getData = async (request, response) => {
             ${table1}.brand_id = ${tableBrands}.brand_id
         ORDER BY 
             license_plate;`
-    // console.log(queryCommand)
 
     db.pool_cars.query(queryCommand, (error, results) => {
         if (!results) {
@@ -40,7 +38,6 @@ const getData = async (request, response) => {
             responseCuccli(response, true, "There you go", results, null)
         }
     })
-    // console.log("===========")
 }
 
 /*
@@ -51,7 +48,6 @@ const getData = async (request, response) => {
  * - success - There you go
  */
 const getDataByID = async (request, response) => {
-    // console.log("===========")
 
     const queryCommand = `
         SELECT 
@@ -73,15 +69,12 @@ const getDataByID = async (request, response) => {
             ${table1}.license_plate = '${(request.params.license_plate)}'
         ORDER BY 
             license_plate;`
-    // console.log(queryCommand)
 
     db.pool_cars.query(queryCommand, (error, results) => {
         if (results !== undefined) {
-            // console.log(results)
-            // console.log(results[0] === undefined)
             if (results[0] === undefined) {
-                console.log("error:", "This car does not exist")
-                responseCuccli(response, false, "This car does not exist", null, null)
+                console.log("error:", `Car does not exist with license plate ${request.params.license_plate}`)
+                responseCuccli(response, false, `Car does not exist with license plate ${request.params.license_plate}`, null, null)
             } else {
                 responseCuccli(response, true, "There you go", results, null)
             }
@@ -89,7 +82,6 @@ const getDataByID = async (request, response) => {
             responseCuccli(response, false, "results is undefined", null, null)
         }
     })
-    // console.log("===========")
 }
 
 module.exports = {

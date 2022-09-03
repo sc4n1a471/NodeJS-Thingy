@@ -1,6 +1,9 @@
 const supertest = require("supertest");
 const app = require("../../app");
 
+/*
+ * Queries cars
+ */
 describe('GET /cars',  () => {
     it("", async () => {
         await supertest(app)

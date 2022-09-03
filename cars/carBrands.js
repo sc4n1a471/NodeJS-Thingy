@@ -10,7 +10,6 @@ let brands = null
  * - success - null
  */
 const getBrands = async (request, response) => {
-    // console.log("======= getBrands =======")
     const queryCommand = "SELECT * FROM brands;"
     db.pool_cars.query(queryCommand, (error, results) => {
         if (!results) {
@@ -21,7 +20,6 @@ const getBrands = async (request, response) => {
             responseCuccli(response, true, null, null, results)
         }
     })
-    // console.log("======= getBrands =======")
 }
 
 // const getBrandById = async (request, response) => {
@@ -45,7 +43,6 @@ const getBrands = async (request, response) => {
  * - success - object of brands(results)
  */
 const queryBrands = async () => {
-    // console.log("====== queryBrands ======")
     const queryCommand = "SELECT * FROM brands;"
 
     return new Promise((resolve, reject) => {
@@ -55,13 +52,10 @@ const queryBrands = async () => {
                 reject("!results is true")
             } else {
                 resolve(results)
-                // console.log("Result: ", results)
-                // console.log("====== queryBrands ======")
             }
         })
     }).catch(function() {
         console.log("reject")
-        // console.log("====== queryBrands ======")
         return "nope"
     })
 }
@@ -69,43 +63,38 @@ const queryBrands = async () => {
 /*
  * Creates new brand
  * Can return 2 responses
- * - error - false
- * - catch - false
- * - success - true
+ * - reject - There are no affected rows
+ * - resolve - [true, results.insertId (newly inserted brand's brand_id)]
+ * - catch - [false]
  */
 const createBrand = async (brand) => {
-    // console.log("====== createBrand ======")
     const queryCommand = `INSERT INTO brands (brand) VALUES ('${brand}')`;
-    // console.log(queryCommand)
 
     return new Promise((resolve, reject) => {
         db.pool_cars.query(queryCommand, async (error, results) => {
             if (results.affectedRows == 0) {
                 console.log(error)
-                // console.log("====== createBrand ======")
                 reject("There are no affected rows");
             } else {
-                // console.log("====== createBrand ======")
                 resolve([true, results.insertId]);
             }
         })
     }).catch(() => {
         console.log("reject")
-        // console.log("====== createBrand ======")
         return [false]
     })
 }
 const createBrandTest = async (request, response) => {
-    const he = await createBrand(request.body.brand)
-    if (he[0]) {
+    const successfullyUploadedNewBrand = await createBrand(request.body.brand)
+    if (successfullyUploadedNewBrand[0]) {
         response.json({
             success: true,
-            brand_id: he[1]
+            brand_id: successfullyUploadedNewBrand[1]
         })
     } else {
         response.json({
             success: false,
-            brand_id: he[1]
+            brand_id: successfullyUploadedNewBrand[1]
         })
     }
 }

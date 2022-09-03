@@ -29,7 +29,7 @@ const createData = async (request, response) => {
         let newBrand = true
 
         /*
-         * if brand is in request body => can be new brand
+         * if brand is in request body => not unknown car
          */
         if (rb.brand !== undefined) {
             for (let value of Object.values(carBrands.brands)) {
