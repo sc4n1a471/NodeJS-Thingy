@@ -47,7 +47,7 @@ const createData = async (request, response) => {
 
         if (newBrand) {
             let successfullyCreatedBrand = await carBrands.createBrand(rb.brand)
-            if (!successfullyCreatedBrand) {
+            if (!successfullyCreatedBrand[0]) {
                 console.log("Failed to create new brand")
                 responseCuccli(response, false, "Could not create new brand", null, null)
                 return

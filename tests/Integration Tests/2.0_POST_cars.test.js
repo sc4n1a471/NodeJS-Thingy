@@ -6,7 +6,9 @@ describe('POST /cars/{ZZZ222}',  () => {
         await supertest(app)
             .post('/cars')
             .expect(200)
-            .send({license_plate: 'ZZZ222'})
+            .send({
+                license_plate: 'ZZZ222'
+            })
             .then((response) => {
                 expect(response.body.success).toBe(true)
             })
