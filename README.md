@@ -4,9 +4,9 @@
 
 Ez lenni repository for REST API szerű NodeJS-Thingy cuccli
 
-|           | GET        | GET_ID               | POST  | PUT                  | DELETE               |
-|-----------|------------|----------------------|-------|----------------------|----------------------|
-| cars      | /cars      | /cars/:license_plate | /cars | /cars/:license_plate | /cars/:license_plate |
-| js_thingy | /test      | /test/:id            | /test | /test/:id            | /test/:id            |
-| mc        | -          | /mc/mcUrl?[url]      | -     | -                    | -                    |
-| carBrands | /carBrands | -                    | -     | -                    | -                    |
+|           | GET        | GET_ID               | POST           | PUT                  | DELETE               |
+|-----------|------------|----------------------|----------------|----------------------|----------------------|
+| cars      | /cars      | /cars/:license_plate | /cars          | /cars/:license_plate | /cars/:license_plate |
+| js_thingy | /test      | /test/:id            | /test          | /test/:id            | /test/:id            |
+| mc        | -          | /mc/mcUrl?[url]      | -              | -                    | -                    |
+| carBrands | /carBrands | -                    | /carBrandsTest | -                    | /carBrands/:brand_id |
