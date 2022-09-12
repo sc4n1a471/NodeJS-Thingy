@@ -1,3 +1,5 @@
+const CarLocation = require("./CarLocation");
+
 class Car {
     constructor(license_plate,
                 brand_id = 1,
@@ -6,7 +8,8 @@ class Car {
                 year = 1901,
                 comment = "DEFAULT_VALUE",
                 is_new = 1,
-                brand = "DEFAULT_VALUE") {
+                brand = "DEFAULT_VALUE",
+                car_location = new CarLocation(46.229014679521015, 20.186523048482677)) {
         this.license_plate = license_plate;
         this.brand_id = brand_id;
         this.model = model;
@@ -15,6 +18,7 @@ class Car {
         this.comment = comment;
         this.is_new = is_new;
         this.brand = brand;
+        this.location = car_location;
         this._new_license_plate = license_plate;
     }
 

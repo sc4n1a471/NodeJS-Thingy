@@ -1,9 +1,11 @@
 const db = require('../database/database.js')
 const cc = require('../commandCreator.js')
-const carModel = require('./carModel.js')
-const {Car} = require("./carModel");
+const carModel = require('../Model/Car.js')
+const {Car} = require("../Model/Car");
 const carBrands = require("./carBrands");
 const responseCuccli = require("../database/response")
+const createLocation = require("../carLocation/locationPOST");
+const updateLocation = require("../carLocation/locationPUT");
 
 /*
  * Returns the updatable car as object
@@ -13,7 +15,32 @@ const responseCuccli = require("../database/response")
  * - Array of car object
  */
 const checkData = async (license_plate, table) => {
-    const queryCommand = `SELECT * FROM ${table} WHERE license_plate = '${license_plate}'`
+    const queryCommand = `
+        SELECT 
+            ${table}.license_plate, 
+            ${table}.brand_id,
+            brands.brand, 
+            ${table}.model, 
+            ${table}.codename, 
+            ${table}.year, 
+            ${table}.comment, 
+            ${table}.is_new,
+            locations.latitude,
+            locations.longitude
+        FROM 
+            ${table}
+        INNER JOIN 
+            brands 
+        ON 
+            ${table}.brand_id = brands.brand_id
+        INNER JOIN
+            locations
+        ON
+            ${table}.location_id = locations.location_id
+        WHERE 
+            ${table}.license_plate = '${license_plate}'
+        ORDER BY 
+            license_plate;`
 
     return new Promise((resolve, reject) => {
         db.pool_cars.query(queryCommand, (error, results) => {
@@ -86,6 +113,16 @@ const updateData = async (request, response) => {
                 finalizedData.new_license_plate = rb.license_plate
             }
 
+            // Update location
+            let successfullyUpdatedLocation = await updateLocation(rp.license_plate, rb.latitude, rb.longitude)
+            if (successfullyUpdatedLocation) {
+                // location_id = successfullyUpdatedLocation
+            } else {
+                console.log("Failed to update location")
+                responseCuccli(response, false, "Could not update location", null, null)
+                return
+            }
+
             /*
              * merges oldCar's and newCar's data into finalizedData
              * if attribute is given in newCar, that means it's a data to be updated
@@ -109,7 +146,6 @@ const updateData = async (request, response) => {
             // console.log(finalizedData)
             command = cc.commandCreator(finalizedData)
             // console.log("Received command:", command)
-
         }
 
 

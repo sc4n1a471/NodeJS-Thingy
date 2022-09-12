@@ -10,7 +10,7 @@ describe('DELETE /cars/ZZZ223',  () => {
             .delete('/cars/ZZZ111')
             .expect(200)
             // .then((response) => {
-            //     expect(response.body.status).toBe("success")
+            //     expect(response.body.status).toBe("succcsak ess")
             // })
 
         await supertest(app)

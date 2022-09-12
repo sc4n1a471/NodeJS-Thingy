@@ -20,13 +20,19 @@ const getData = async (request, response) => {
             ${table1}.codename, 
             ${table1}.year, 
             ${table1}.comment, 
-            ${table1}.is_new 
+            ${table1}.is_new,
+            locations.latitude,
+            locations.longitude
         FROM 
             ${table1}
         INNER JOIN 
             ${tableBrands} 
         ON 
             ${table1}.brand_id = ${tableBrands}.brand_id
+        INNER JOIN
+            locations
+        ON
+            ${table1}.location_id = locations.location_id
         ORDER BY 
             license_plate;`
 
@@ -58,13 +64,19 @@ const getDataByID = async (request, response) => {
             ${table1}.codename, 
             ${table1}.year, 
             ${table1}.comment, 
-            ${table1}.is_new 
+            ${table1}.is_new,
+            locations.latitude,
+            locations.longitude
         FROM 
             ${table1}
         INNER JOIN 
             ${tableBrands} 
         ON 
             ${table1}.brand_id = ${tableBrands}.brand_id
+        INNER JOIN
+            locations
+        ON
+            ${table1}.location_id = locations.location_id
         WHERE 
             ${table1}.license_plate = '${(request.params.license_plate)}'
         ORDER BY 

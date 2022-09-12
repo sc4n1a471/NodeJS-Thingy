@@ -1,10 +1,10 @@
 const express = require("express")
 const app = express()
 
-const carGet = require('./cars/carGet.js')
-const carPost = require('./cars/carPost.js')
-const carPut = require('./cars/carPut.js')
-const carDelete = require('./cars/carDelete.js')
+const carGet = require('./cars/GET_cars.js')
+const carPost = require('./cars/POST_cars.js')
+const carPut = require('./cars/PUT_cars.js')
+const carDelete = require('./cars/DELETE_cars.js')
 const carBrands = require('./cars/carBrands.js')
 const mc = require('./mc.js')
 // const test_get = require("./js_thingy/test_get.js");

@@ -2,7 +2,7 @@ const supertest = require("supertest");
 const app = require("../../app");
 
 /*
- * Uploads a car with license plate ZZZ222 with the request body from thr frontend
+ * Uploads a car with license plate ZZZ222 with the request body from the frontend
  */
 describe('POST /cars/{ZZZ222}',  () => {
     it("",async () => {
@@ -17,7 +17,9 @@ describe('POST /cars/{ZZZ222}',  () => {
                 codename: "",
                 year: 1901,
                 comment: "",
-                is_new: 1
+                is_new: 1,
+                latitude: 46.229014679521015,
+                longitude: 20.18652304848268
             })
             .then((response) => {
                 expect(response.body.success).toBe(true)
