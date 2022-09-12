@@ -1,7 +1,8 @@
 const db = require('../database/database.js')
 const responseCuccli = require("../database/response")
-const {Car} = require("./carModel.js");
+const {Car} = require("../Model/Car.js");
 const carBrands = require("./carBrands");
+const createLocation = require("../carLocation/locationPOST");
 
 /*
  * Creates car
@@ -23,10 +24,11 @@ const createData = async (request, response) => {
 
         let newData
 
-        carBrands.brands = await carBrands.queryBrands();
-
         let brand_id = 0
+        let location_id = 1
         let newBrand = true
+
+        carBrands.brands = await carBrands.queryBrands();
 
         if (rb.brand !== undefined) {
             for (let value of Object.values(carBrands.brands)) {
@@ -69,6 +71,15 @@ const createData = async (request, response) => {
         //     }
         // }
 
+        let successfullyCreatedLocation = await createLocation(rb.latitude, rb.longitude)
+        if (successfullyCreatedLocation[0]) {
+            location_id = successfullyCreatedLocation[1]
+        } else {
+            console.log("Failed to create new location")
+            responseCuccli(response, false, "Could not create new location", null, null)
+            return
+        }
+
         /*
          * Give every value a DEFAULT_VALUE if they are null/""
          */
@@ -77,11 +88,11 @@ const createData = async (request, response) => {
                 rb[key] = "DEFAULT_VALUE"
             }
         }
-        newData = new Car(rb.license_plate, brand_id, rb.model, rb.codename, rb.year, rb.comment, rb.is_new)
+        newData = new Car(rb.license_plate, brand_id, rb.model, rb.codename, rb.year, rb.comment, rb.is_new, location_id)
 
         // console.log("newData: " , newData)
 
-        let command = `INSERT INTO ${table} VALUES (?, ?, ?, ?, ?, ?, ?)`;
+        let command = `INSERT INTO ${table} VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
 
         db.pool_cars.query(command, Object.values(newData), (error) => {
             if (error) {

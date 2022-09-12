@@ -10,6 +10,8 @@ const commandCreator = (data) => {
         codename: false,
         year: false,
         comment: false
+        // latitude: false,
+        // longitude: false
     }
 
     let set = " SET"
@@ -62,6 +64,18 @@ const commandCreator = (data) => {
     } else {
         notHas.push(`is_new = '${data.is_new}'`)
     }
+
+    // if (hasIt.latitude) {
+    //     where += ` AND latitude = '${data.location.latitude}'`
+    // } else {
+    //     notHas.push(`latitude = '${data.location.latitude}'`)
+    // }
+    //
+    // if (hasIt.longitude) {
+    //     where += ` AND longitude = '${data.location.longitude}'`
+    // } else {
+    //     notHas.push(`longitude = '${data.location.longitude}'`)
+    // }
 
     set += " " + notHas.join(",")
     command += set
