@@ -1,4 +1,4 @@
-const LocationModel = require("../carLocation/locationModel");
+const CarLocation = require("./CarLocation");
 
 class Car {
     constructor(license_plate,
@@ -9,7 +9,7 @@ class Car {
                 comment = "DEFAULT_VALUE",
                 is_new = 1,
                 brand = "DEFAULT_VALUE",
-                car_location = LocationModel(46.229014679521015, 20.186523048482677)) {
+                car_location = new CarLocation(46.229014679521015, 20.186523048482677)) {
         this.license_plate = license_plate;
         this.brand_id = brand_id;
         this.model = model;
@@ -35,4 +35,6 @@ class Car {
     }
 }
 
-module.exports = Car
+module.exports = {
+    Car
+}

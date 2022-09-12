@@ -1,14 +1,27 @@
 const db = require("../database/database");
 
 /*
- * Creates new location
+ * Updates existing location
  * Can return 3 responses
  * - reject - There are no affected rows
- * - resolve - [true, results.insertId (newly inserted location's location_od)]
- * - catch - [false]
+ * - resolve - true
+ * - catch - false
  */
-const createLocation = async (latitude, longitude) => {
-    const queryCommand = `INSERT INTO locations(latitude, longitude) VALUES (${latitude}, ${longitude})`;
+const updateLocation = async (license_plate, latitude, longitude) => {
+    const queryCommand = `
+        UPDATE 
+            locations 
+        SET 
+            latitude=${latitude}, 
+            longitude=${longitude} 
+        WHERE 
+            locations.location_id=
+                (SELECT 
+                    table1.location_id 
+                 FROM 
+                    table1 
+                 WHERE 
+                    table1.license_plate='${license_plate}')`;
 
     return new Promise((resolve, reject) => {
         db.pool_cars.query(queryCommand, async (error, results) => {
@@ -17,7 +30,7 @@ const createLocation = async (latitude, longitude) => {
                     console.log(error)
                     reject("There are no affected rows");
                 } else {
-                    resolve([true, results.insertId]);
+                    resolve(true);
                 }
             } else {
                 reject("'Results' is undefined")
@@ -29,4 +42,4 @@ const createLocation = async (latitude, longitude) => {
     })
 }
 
-module.exports = createLocation
+module.exports = updateLocation

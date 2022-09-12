@@ -20,7 +20,9 @@ describe('PUT /cars/ZZZ223',  () => {
                 year: 1901,
                 codename: 'DEFAULT_VALUE',
                 comment: 'testing',
-                brand_id: 1
+                brand_id: 1,
+                latitude: 47,
+                longitude: 21
             })
             .then((response) => {
                 expect(response.body.success).toBe(true)
