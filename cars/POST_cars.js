@@ -2,7 +2,6 @@ const db = require('../database/database.js')
 const responseCuccli = require("../database/response")
 const {Car} = require("../Model/Car.js");
 const carBrands = require("./carBrands");
-const createLocation = require("../carLocation/locationPOST");
 
 /*
  * Creates car
@@ -25,7 +24,6 @@ const createData = async (request, response) => {
         let newData
 
         let brand_id = 0
-        let location_id = 1
         let newBrand = true
 
         carBrands.brands = await carBrands.queryBrands();
@@ -55,31 +53,6 @@ const createData = async (request, response) => {
             brand_id = 1
         }
 
-        // if (newBrand) {
-        //     let successfullyCreatedBrand = await carBrands.createBrand(rb.brand)
-        //     if (!successfullyCreatedBrand[0]) {
-        //         console.log("Failed to create new brand")
-        //         responseCuccli(response, false, "Could not create new brand", null, null)
-        //         return
-        //     } else {
-        //         for (let value of Object.values(carBrands.brands)) {
-        //             if (rb.brand === value.brand) {
-        //                 brand_id = value.brand_id
-        //                 break;
-        //             }
-        //         }
-        //     }
-        // }
-
-        let successfullyCreatedLocation = await createLocation(rb.latitude, rb.longitude)
-        if (successfullyCreatedLocation[0]) {
-            location_id = successfullyCreatedLocation[1]
-        } else {
-            console.log("Failed to create new location")
-            responseCuccli(response, false, "Could not create new location", null, null)
-            return
-        }
-
         /*
          * Give every value a DEFAULT_VALUE if they are null/""
          */
@@ -88,11 +61,11 @@ const createData = async (request, response) => {
                 rb[key] = "DEFAULT_VALUE"
             }
         }
-        newData = new Car(rb.license_plate, brand_id, rb.model, rb.codename, rb.year, rb.comment, rb.is_new, location_id)
+        newData = new Car(rb.license_plate, brand_id, rb.model, rb.codename, rb.year, rb.comment, rb.is_new, rb.latitude, rb.longitude)
 
         // console.log("newData: " , newData)
 
-        let command = `INSERT INTO ${table} VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+        let command = `INSERT INTO ${table} VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
         db.pool_cars.query(command, Object.values(newData), (error) => {
             if (error) {

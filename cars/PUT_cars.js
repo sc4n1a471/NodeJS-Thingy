@@ -4,8 +4,6 @@ const carModel = require('../Model/Car.js')
 const {Car} = require("../Model/Car");
 const carBrands = require("./carBrands");
 const responseCuccli = require("../database/response")
-const createLocation = require("../carLocation/locationPOST");
-const updateLocation = require("../carLocation/locationPUT");
 
 /*
  * Returns the updatable car as object
@@ -25,18 +23,14 @@ const checkData = async (license_plate, table) => {
             ${table}.year, 
             ${table}.comment, 
             ${table}.is_new,
-            locations.latitude,
-            locations.longitude
+            ${table}.latitude,
+            ${table}.longitude
         FROM 
             ${table}
         INNER JOIN 
             brands 
         ON 
             ${table}.brand_id = brands.brand_id
-        INNER JOIN
-            locations
-        ON
-            ${table}.location_id = locations.location_id
         WHERE 
             ${table}.license_plate = '${license_plate}'
         ORDER BY 
@@ -44,13 +38,21 @@ const checkData = async (license_plate, table) => {
 
     return new Promise((resolve, reject) => {
         db.pool_cars.query(queryCommand, (error, results) => {
-            if (!results[0]) {
-                reject(`No car with license plate ${license_plate}`)
+            if (results !== undefined) {
+                if (results.affectedRows === 0) {
+                    console.log(`No car with license plate ${license_plate}`)
+                    reject(`No car with license plate ${license_plate}`)
+                } else {
+                    resolve(results[0])
+                }
             } else {
-                resolve(results[0])
+                console.log(`Result is empty`)
+                reject(`Result is empty`)
             }
+
         })
     }).catch(function() {
+        console.log("No car was found with this license plate")
         return "No car was found with this license plate"
     })
 }
@@ -113,16 +115,6 @@ const updateData = async (request, response) => {
                 finalizedData.new_license_plate = rb.license_plate
             }
 
-            // Update location
-            let successfullyUpdatedLocation = await updateLocation(rp.license_plate, rb.latitude, rb.longitude)
-            if (successfullyUpdatedLocation) {
-                // location_id = successfullyUpdatedLocation
-            } else {
-                console.log("Failed to update location")
-                responseCuccli(response, false, "Could not update location", null, null)
-                return
-            }
-
             /*
              * merges oldCar's and newCar's data into finalizedData
              * if attribute is given in newCar, that means it's a data to be updated
@@ -162,6 +154,7 @@ const updateData = async (request, response) => {
             }
         })
     } else {
+        console.log("This data does not exist")
         responseCuccli(response, false, "This data does not exist", null, null)
     }
 }
