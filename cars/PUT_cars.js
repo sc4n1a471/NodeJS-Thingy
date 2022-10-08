@@ -1,9 +1,10 @@
 const db = require('../database/database.js')
-const cc = require('../commandCreator.js')
+const cc = require('../commands/commandCreator.js')
 const carModel = require('../Model/Car.js')
 const {Car} = require("../Model/Car");
 const carBrands = require("./carBrands");
 const responseCuccli = require("../database/response")
+const sqlCommands = require("../commands/sqlCommands.js")
 
 /*
  * Returns the updatable car as object
@@ -13,31 +14,8 @@ const responseCuccli = require("../database/response")
  * - Array of car object
  */
 const checkData = async (license_plate, table) => {
-    const queryCommand = `
-        SELECT 
-            ${table}.license_plate, 
-            ${table}.brand_id,
-            brands.brand, 
-            ${table}.model, 
-            ${table}.codename, 
-            ${table}.year, 
-            ${table}.comment, 
-            ${table}.is_new,
-            ${table}.latitude,
-            ${table}.longitude
-        FROM 
-            ${table}
-        INNER JOIN 
-            brands 
-        ON 
-            ${table}.brand_id = brands.brand_id
-        WHERE 
-            ${table}.license_plate = '${license_plate}'
-        ORDER BY 
-            license_plate;`
-
     return new Promise((resolve, reject) => {
-        db.pool_cars.query(queryCommand, (error, results) => {
+        db.pool_cars.query(sqlCommands.checkDataCommand(license_plate, table), (error, results) => {
             if (results !== undefined) {
                 if (results.affectedRows === 0) {
                     console.log(`No car with license plate ${license_plate}`)

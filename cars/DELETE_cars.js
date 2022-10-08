@@ -1,5 +1,6 @@
 const db = require('../database/database.js')
 const responseCuccli = require("../database/response")
+const sqlCommands = require("../commands/sqlCommands.js")
 
 /*
  * Deletes car with given license plate
@@ -10,15 +11,9 @@ const responseCuccli = require("../database/response")
 const deleteData = async (request, response) => {
     // console.log("===========")
 
-    const table = "table1"
-    // console.log("Table: ", table)
-
     const license_plate = request.params.license_plate
 
-    const queryCommand = `DELETE FROM ${table} WHERE license_plate = '${license_plate}';`
-    // console.log(queryCommand)
-
-    db.pool_cars.query(queryCommand, (error, results) => {
+    db.pool_cars.query(sqlCommands.deleteDataCommand(license_plate), (error, results) => {
         if (error) {
             console.log(error)
             responseCuccli(response, false, error, null, null)

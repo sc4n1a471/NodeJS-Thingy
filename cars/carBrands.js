@@ -1,5 +1,6 @@
 const db = require("../database/database");
 const responseCuccli = require("../database/response")
+const sqlCommands = require("../commands/sqlCommands.js")
 
 let brands = null
 
@@ -10,8 +11,7 @@ let brands = null
  * - success - null
  */
 const getBrands = async (request, response) => {
-    const queryCommand = "SELECT * FROM brands;"
-    db.pool_cars.query(queryCommand, (error, results) => {
+    db.pool_cars.query(sqlCommands.getBrandsCommand, (error, results) => {
         if (!results) {
             console.log(error)
             responseCuccli(response, false, error.code, null, null)
@@ -43,10 +43,8 @@ const getBrands = async (request, response) => {
  * - success - object of brands(results)
  */
 const queryBrands = async () => {
-    const queryCommand = "SELECT * FROM brands;"
-
     return new Promise((resolve, reject) => {
-        db.pool_cars.query(queryCommand, (error, results) => {
+        db.pool_cars.query(sqlCommands.getBrandsCommand, (error, results) => {
             if (!results) {
                 console.log(error)
                 reject("!results is true")
@@ -68,12 +66,10 @@ const queryBrands = async () => {
  * - catch - [false]
  */
 const createBrand = async (brand) => {
-    const queryCommand = `INSERT INTO brands (brand) VALUES ('${brand}')`;
-
     return new Promise((resolve, reject) => {
-        db.pool_cars.query(queryCommand, async (error, results) => {
+        db.pool_cars.query(sqlCommands.createBrandCommand(brand), async (error, results) => {
             if (results !== undefined) {
-                if (results.affectedRows == 0) {
+                if (results.affectedRows === 0) {
                     console.log(error)
                     reject("There are no affected rows");
                 } else {
@@ -110,9 +106,7 @@ const createBrandTest = async (request, response) => {
  * - success - true, Brand was deleted successfully
  */
 const deleteBrand = async (request, response) => {
-    let queryCommand = `DELETE FROM brands WHERE brand_id = '${request.params.brand_id}';`
-
-    db.pool_cars.query(queryCommand, async (error, results) => {
+    db.pool_cars.query(sqlCommands.deleteBrandCommand(request.params.brand_id), async (error, results) => {
         if (results.affectedRows === 0) {
             console.log(error)
             responseCuccli(response, false, error, null, null)

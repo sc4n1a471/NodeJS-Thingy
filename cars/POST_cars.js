@@ -2,6 +2,7 @@ const db = require('../database/database.js')
 const responseCuccli = require("../database/response")
 const {Car} = require("../Model/Car.js");
 const carBrands = require("./carBrands");
+const sqlCommands = require("../commands/sqlCommands.js")
 
 /*
  * Creates car
@@ -17,8 +18,6 @@ const createData = async (request, response) => {
 
     // license plate in request body is important
     if (request.body.license_plate !== undefined) {
-        const table = "table1"
-        const tableBrand = "brands"
         let rb = request.body
 
         let newData
@@ -65,9 +64,7 @@ const createData = async (request, response) => {
 
         // console.log("newData: " , newData)
 
-        let command = `INSERT INTO ${table} VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-
-        db.pool_cars.query(command, Object.values(newData), (error) => {
+        db.pool_cars.query(sqlCommands.createDataCommand, Object.values(newData), (error) => {
             if (error) {
                 console.log(error)
                 responseCuccli(response, false, error, null, null)
