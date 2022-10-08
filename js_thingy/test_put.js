@@ -1,6 +1,6 @@
 const test_table = require('./test_table.js')
 const db = require('../database/database.js')
-const cc = require('../commandCreator.js')
+const cc = require('../commands/commandCreator.js')
 
 const checkData = async (id, table) => {
     console.log("====== checkData ======")

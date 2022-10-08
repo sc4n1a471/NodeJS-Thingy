@@ -1,9 +1,10 @@
 const db = require('../database/database.js')
-const cc = require('../commandCreator.js')
+const cc = require('../commands/commandCreator.js')
 const carModel = require('../Model/Car.js')
 const {Car} = require("../Model/Car");
 const carBrands = require("./carBrands");
 const responseCuccli = require("../database/response")
+const sqlCommands = require("../commands/sqlCommands.js")
 
 /*
  * Returns the updatable car as object
@@ -13,31 +14,8 @@ const responseCuccli = require("../database/response")
  * - Array of car object
  */
 const checkData = async (license_plate, table) => {
-    const queryCommand = `
-        SELECT 
-            ${table}.license_plate, 
-            ${table}.brand_id,
-            brands.brand, 
-            ${table}.model, 
-            ${table}.codename, 
-            ${table}.year, 
-            ${table}.comment, 
-            ${table}.is_new,
-            ${table}.latitude,
-            ${table}.longitude
-        FROM 
-            ${table}
-        INNER JOIN 
-            brands 
-        ON 
-            ${table}.brand_id = brands.brand_id
-        WHERE 
-            ${table}.license_plate = '${license_plate}'
-        ORDER BY 
-            license_plate;`
-
     return new Promise((resolve, reject) => {
-        db.pool_cars.query(queryCommand, (error, results) => {
+        db.pool_cars.query(sqlCommands.checkDataCommand(license_plate, table), (error, results) => {
             if (results !== undefined) {
                 if (results.affectedRows === 0) {
                     console.log(`No car with license plate ${license_plate}`)
@@ -99,7 +77,7 @@ const updateData = async (request, response) => {
                         brand_id = successfullyUploadedNewBrand[1]
                     } else {
                         console.log("Failed to create new brand")
-                        responseCuccli(response, false, "Could not create new brand", null, null)
+                        responseCuccli(response, false, "Could not create new brand", null, null, 500)
                         return
                     }
                 }
@@ -144,18 +122,18 @@ const updateData = async (request, response) => {
         db.pool_cars.query(command,(error, results) => {
             if (error) {
                 console.log(error)
-                responseCuccli(response, false, error, null, null)
+                responseCuccli(response, false, error, null, null, 500)
             } else if (results.affectedRows === 0) {
                 console.error("No rows were affected")
-                responseCuccli(response, false, "No rows were affected", finalizedData, null)
+                responseCuccli(response, false, "No rows were affected", finalizedData, null, 418)
             } else {
                 // console.log("Results: " + JSON.stringify(results))
-                responseCuccli(response, true, 'Car was updated successfully', finalizedData, null)
+                responseCuccli(response, true, 'Car was updated successfully', finalizedData, null, 201)
             }
         })
     } else {
         console.log("This data does not exist")
-        responseCuccli(response, false, "This data does not exist", null, null)
+        responseCuccli(response, false, "This data does not exist", null, null, 404)
     }
 }
 
