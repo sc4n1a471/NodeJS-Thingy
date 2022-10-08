@@ -2,6 +2,7 @@ const db = require('../database/database.js')
 const responseCuccli = require("../database/response")
 const {Car} = require("../Model/Car.js");
 const carBrands = require("./carBrands");
+const sqlCommands = require("../commands/sqlCommands.js")
 
 /*
  * Creates car
@@ -17,8 +18,6 @@ const createData = async (request, response) => {
 
     // license plate in request body is important
     if (request.body.license_plate !== undefined) {
-        const table = "table1"
-        const tableBrand = "brands"
         let rb = request.body
 
         let newData
@@ -44,7 +43,7 @@ const createData = async (request, response) => {
                     brand_id = successfullyUploadedNewBrand[1]
                 } else {
                     console.log("Failed to create new brand")
-                    responseCuccli(response, false, "Could not create new brand", null, null)
+                    responseCuccli(response, false, "Could not create new brand", null, null, 500)
                     return
                 }
             }
@@ -65,18 +64,16 @@ const createData = async (request, response) => {
 
         // console.log("newData: " , newData)
 
-        let command = `INSERT INTO ${table} VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-
-        db.pool_cars.query(command, Object.values(newData), (error) => {
+        db.pool_cars.query(sqlCommands.createDataCommand, Object.values(newData), (error) => {
             if (error) {
                 console.log(error)
-                responseCuccli(response, false, error, null, null)
+                responseCuccli(response, false, error, null, null, 500)
             } else {
-                responseCuccli(response, true, null, newData, null)
+                responseCuccli(response, true, null, newData, null, 201)
             }
         })
     } else {
-        responseCuccli(response, false, "License plate is not in HTTP request body", null, null)
+        responseCuccli(response, false, "License plate is not in HTTP request body", null, null, 400)
     }
 }
 

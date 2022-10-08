@@ -11,7 +11,7 @@ describe('PUT /cars/ZZZ223',  () => {
     it("",async () => {
         await supertest(app)
             .put('/cars/ZZZ223')
-            .expect(200)
+            .expect(201)
             .send({
                 license_plate: 'ZZZ223',
                 is_new: 0,

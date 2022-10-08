@@ -8,7 +8,7 @@ describe('POST /cars/{ZZZ222}',  () => {
     it("",async () => {
         await supertest(app)
             .post('/cars')
-            .expect(200)
+            .expect(201)
             .send({
                 license_plate: 'ZZZ222',
                 brand_id: 1,
