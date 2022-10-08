@@ -44,7 +44,7 @@ const getDataByIDCommand = (request) => {
         ORDER BY 
             license_plate;`
 }
-const createDataCommand = `INSERT INTO ${table1} VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
+const createDataCommand = `INSERT INTO ${table1}(license_plate, brand_id, model, codename, year, comment, is_new, latitude, longitude) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
 const deleteDataCommand = (license_plate) => {
     return `DELETE FROM ${table1} WHERE license_plate = '${license_plate}';`
 }

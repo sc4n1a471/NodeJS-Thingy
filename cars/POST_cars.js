@@ -43,7 +43,7 @@ const createData = async (request, response) => {
                     brand_id = successfullyUploadedNewBrand[1]
                 } else {
                     console.log("Failed to create new brand")
-                    responseCuccli(response, false, "Could not create new brand", null, null)
+                    responseCuccli(response, false, "Could not create new brand", null, null, 500)
                     return
                 }
             }
@@ -67,13 +67,13 @@ const createData = async (request, response) => {
         db.pool_cars.query(sqlCommands.createDataCommand, Object.values(newData), (error) => {
             if (error) {
                 console.log(error)
-                responseCuccli(response, false, error, null, null)
+                responseCuccli(response, false, error, null, null, 500)
             } else {
-                responseCuccli(response, true, null, newData, null)
+                responseCuccli(response, true, null, newData, null, 201)
             }
         })
     } else {
-        responseCuccli(response, false, "License plate is not in HTTP request body", null, null)
+        responseCuccli(response, false, "License plate is not in HTTP request body", null, null, 400)
     }
 }
 

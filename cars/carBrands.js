@@ -14,7 +14,7 @@ const getBrands = async (request, response) => {
     db.pool_cars.query(sqlCommands.getBrandsCommand, (error, results) => {
         if (!results) {
             console.log(error)
-            responseCuccli(response, false, error.code, null, null)
+            responseCuccli(response, false, error.code, null, null, 500)
         } else {
             brands = results
             responseCuccli(response, true, null, null, results)
@@ -109,7 +109,7 @@ const deleteBrand = async (request, response) => {
     db.pool_cars.query(sqlCommands.deleteBrandCommand(request.params.brand_id), async (error, results) => {
         if (results.affectedRows === 0) {
             console.log(error)
-            responseCuccli(response, false, error, null, null)
+            responseCuccli(response, false, error, null, null, 500)
         } else {
             responseCuccli(response, true, "Brand was deleted successfully", null, null)
         }

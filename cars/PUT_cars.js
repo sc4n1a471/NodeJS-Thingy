@@ -77,7 +77,7 @@ const updateData = async (request, response) => {
                         brand_id = successfullyUploadedNewBrand[1]
                     } else {
                         console.log("Failed to create new brand")
-                        responseCuccli(response, false, "Could not create new brand", null, null)
+                        responseCuccli(response, false, "Could not create new brand", null, null, 500)
                         return
                     }
                 }
@@ -122,18 +122,18 @@ const updateData = async (request, response) => {
         db.pool_cars.query(command,(error, results) => {
             if (error) {
                 console.log(error)
-                responseCuccli(response, false, error, null, null)
+                responseCuccli(response, false, error, null, null, 500)
             } else if (results.affectedRows === 0) {
                 console.error("No rows were affected")
-                responseCuccli(response, false, "No rows were affected", finalizedData, null)
+                responseCuccli(response, false, "No rows were affected", finalizedData, null, 418)
             } else {
                 // console.log("Results: " + JSON.stringify(results))
-                responseCuccli(response, true, 'Car was updated successfully', finalizedData, null)
+                responseCuccli(response, true, 'Car was updated successfully', finalizedData, null, 201)
             }
         })
     } else {
         console.log("This data does not exist")
-        responseCuccli(response, false, "This data does not exist", null, null)
+        responseCuccli(response, false, "This data does not exist", null, null, 404)
     }
 }
 

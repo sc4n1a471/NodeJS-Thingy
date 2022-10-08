@@ -16,7 +16,7 @@ const deleteData = async (request, response) => {
     db.pool_cars.query(sqlCommands.deleteDataCommand(license_plate), (error, results) => {
         if (error) {
             console.log(error)
-            responseCuccli(response, false, error, null, null)
+            responseCuccli(response, false, error, null, null, 500)
         } else {
             responseCuccli(response, true, `Car deleted with license plate '${license_plate}'!'`, null, null)
         }
