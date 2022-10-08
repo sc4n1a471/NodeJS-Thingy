@@ -12,7 +12,8 @@ const getDataCommand = `
             ${table1}.comment, 
             ${table1}.is_new,
             ${table1}.latitude,
-            ${table1}.longitude
+            ${table1}.longitude,
+            ${table1}.created_at
         FROM 
             ${table1}
         INNER JOIN 
